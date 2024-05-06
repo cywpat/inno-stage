@@ -1,12 +1,13 @@
 import React from 'react';
-import './styles/globalStyles.css'
-import Table from './components/Table/Table'
+import {} from './styles/globalStyles'
+import Dashboard from './components/Dashboard/Dashboard';
 import Routes from './AppRoutes';
 
 const App: React.FC = () => {
   return (
     <div>
-      <Routes />  
+      {/* <h1 className='bg-indigo-100'>hello</h1> */}
+      <Routes />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Table from "../components/Table/Table";
 import { TableColumn } from "react-data-table-component";
+import Dashboard from "../components/Dashboard/Dashboard";
 
 function Engineer() {
 
@@ -67,10 +68,11 @@ function Engineer() {
     
     return (
         <>
-            <h2>Engineer Staging Status</h2>
-            <div>
-                <Table columns={columns} data={data} />
+            <div className='p-8'>
+                <h2 className='text-4xl font-bold'>Engineer Staging Status</h2>
             </div>
+            {/* <Table columns={columns} data={data} /> */}
+            <Dashboard />
         </>
 
     );
