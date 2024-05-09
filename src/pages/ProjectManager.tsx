@@ -1,8 +1,12 @@
 import React from "react";
+import DashboardPM from "../components/Dashboard/DashboardPM";
 
 function ProjectManager() {
     return (
-        <div>Project Manager</div>    
+        <>
+            <div>Project Manager</div>
+            <DashboardPM />
+        </>
     );
 }
 
