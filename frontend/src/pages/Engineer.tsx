@@ -1,77 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "../components/Table/Table";
 import { TableColumn } from "react-data-table-component";
 import Dashboard from "../components/Dashboard/Dashboard";
+import axios from 'axios';
 
 function Engineer() {
 
     interface DataRow {
-        id: number;
-        so: number;
-        status: string;
-        dateDrawn: string;
-        dateReturned: string;
-        noOfCartons: number;
+        // id: number;
+        sales_order: number;
+        engineer: string;
+        staging_status: string;
+        date_drawn: string;
+        no_carton: number;
+        last_status_update: string;
     };
+
+    const [data, setData] = useState<DataRow[]>([]);
+    /* staging data will look something like this, it is a list of dictionaries
+        [
+        {'sales_order': '827697', 'engineer': 'Rui, Goh, Tay, Chen', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}, 
+        {'sales_order': '817940', 'engineer': 'Lim, Lee, Zhao Chee, Tay, Tan', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}, 
+        {'sales_order': '833151', 'engineer': 'Lim, Yang', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}
+        ]
+    */
+    useEffect(() => {
+        // fetch data
+        axios.get("http://localhost:8000/manyapps/staging_table/").then(
+            function (response) {                             
+                setData(response.data["data"])
+            }
+        ).catch(
+            function (error) {
+                console.log(error)
+            }
+        )
+    }, []);
+
 
     const columns: TableColumn<DataRow>[] = [
         {
             name: 'SO#',
-            selector: row => row.so,
+            selector: row => row.sales_order,
             sortable: true,
         },
         {
             name: 'Status',
-            selector: row => row.status,
+            selector: row => row.staging_status,
         },
         {
             name: 'Date Drawn',
-            selector: row => row.dateDrawn,
+            selector: row => row.date_drawn,
         },
         {
-            name: 'Date Returned',
-            selector: row => row.dateReturned,
+            name: 'Last Status Update',
+            selector: row => row.last_status_update,
         },
         {
             name: 'No. of Cartons',
-            selector: row => row.noOfCartons,
+            selector: row => row.no_carton,
         },
     ];
-    
-    const data: DataRow[] = [
-        {
-            id: 1,
-            so: 123,
-            status: 'Not Yet Started',
-            dateDrawn: '',
-            dateReturned: '',
-            noOfCartons: 2
-        },
-        {
-            id: 2,
-            so: 234,
-            status: 'In Progress',
-            dateDrawn: '14/4/2024',
-            dateReturned: '',
-            noOfCartons: 2
-        },
-        {
-            id: 3,
-            so: 345,
-            status: 'Completed',
-            dateDrawn: '14/4/2024',
-            dateReturned: '18/4/2024',
-            noOfCartons: 5
-        },
-    ]
-
     
     return (
         <>
             <div className='p-8'>
                 <h2 className='text-4xl font-bold'>Engineer Staging Status</h2>
             </div>
-            {/* <Table columns={columns} data={data} /> */}
+
+            <Table columns={columns} data={data} />
             <Dashboard />
         </>
 

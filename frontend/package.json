@@ -1,6 +1,7 @@
 {
   "name": "inno-stage-test",
   "version": "0.1.0",
+  "proxy": "http://localhost:8000",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
@@ -12,6 +13,7 @@
     "@types/react-dom": "^18.2.25",
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^7.8.0",
+    "axios": "^1.6.8",
     "daisyui": "^4.10.5",
     "react": "^18.2.0",
     "react-data-table-component": "^7.6.2",
