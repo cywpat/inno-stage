@@ -6,10 +6,8 @@ import email_icon from '../images/email.png';
 import password_icon from '../images/password.png';
 
 const Login = () => {
-
     const [action, setAction] = useState("Sign Up");
-
-
+    
     return (
         <div className="login-page">
                 <div className="header">
