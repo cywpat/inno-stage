@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SWrapper } from './styles';
 import { MdOutlineEditCalendar, MdEditNote } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -8,9 +8,56 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import dayjs from "dayjs";
 import 'dayjs/locale/en-sg'
+import axios from 'axios';
 
 const Dashboard = () => {
     const today = new Date();
+
+     const [data, setData] = useState<{ name: string }[]>([]);
+    /* data will look something like this, it is a list of dictionaries
+        [
+        {'name': 'a'}, 
+        {'name': 'b'}, 
+        {'name': 'c'}
+        ]
+    */
+    useEffect(() => {
+        // fetch data
+        axios.get("http://localhost:8000/manyapps/engineer_table/").then(
+            function (response) {                             
+                setData(response.data["data"])
+            }
+        ).catch(
+            function (error) {
+                console.log(error)
+            }
+        )
+    }, []);
+
+    const [searchEngineerResults, setSearchEngineerResults] = useState<{ name: string }[]>([]);
+
+    const handleSearchEngineerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const searchTerm = event.target.value.toLowerCase();
+
+        const filteredNames = data.filter((user) =>
+            user.name.toLowerCase().includes(searchTerm)
+        );
+
+        setSearchEngineerResults(filteredNames);
+    };
+    
+    const handleAssignEngineerSubmit = () => {
+         //  replace search results with something else
+        // get the SO number
+        const data = {
+                "sales_order": 840275,  // hardcode
+                "engineers": searchEngineerResults
+            }
+        axios.post("http://localhost:8000/manyapps/engineer_table/", { data })
+          .catch(error => {
+            console.error("Error fetching data:", error);
+          });
+      };
 
     return (
         <div className='px-8'>
@@ -94,6 +141,7 @@ const Dashboard = () => {
                         <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-200'>Tesla</span>
                     </span>
                 </div>
+                
                 <div className="relative m-2 rounded-md shadow-sm w-1/2 max-w-xs">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                         <span className="text-gray-500 sm:text-sm"><AiOutlineSearch /></span>
@@ -104,8 +152,15 @@ const Dashboard = () => {
                         id="price"
                         className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                         placeholder="Search"
+                        onChange={handleSearchEngineerChange}
                     />
+                    <ul>
+                        {searchEngineerResults.map((user) => (
+                        <li key={user.name}>{user.name}</li>
+                        ))}
+                    </ul>
                 </div>
+
                 <span className="m-2 flex flex-col">
                     <span className="pl-2">
                         <input type="checkbox" checked />
@@ -121,7 +176,7 @@ const Dashboard = () => {
                     </span>
                 </span>
                 <div className="modal-action">
-                    <label htmlFor="my_modal_6" className="btn">Submit</label>
+                    <label htmlFor="my_modal_6" className="btn" onClick={handleAssignEngineerSubmit}>Submit</label>
                     <label htmlFor="my_modal_6" className="btn">Cancel</label>
                 </div>
             </div>
