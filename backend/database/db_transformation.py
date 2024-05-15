@@ -1,6 +1,7 @@
 import psycopg2
 import pandas as pd
 import numpy as np
+import re
 from psycopg2.extensions import register_adapter, AsIs
 register_adapter(np.int64, AsIs)
 
@@ -16,16 +17,19 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
                                   '[SumGP_Usd]']]
     eDSR_df.columns = ['Sales Order', 'Client Industry Sector', 'Delivery Status', 'Delivery Order Criteria', 'Delivery FC Month', 'Delivery AC Month', 'Logistics PIC', 'Revenue', 'GP']
     
-    
     eTSR_df = pd.read_excel(eTSR_FILEPATH, skiprows=[1])
     eTSR_df = eTSR_df[['Sales Order', 'Client PO Number', 'Client Name',
                                   'Project Manager','Engineer','Date Creation',
                                   'Date Closed','Service Unit', 'Business Unit',
                                   'TSR Number', 'Project ID']]
     
+    # 3. Remove every odd occurance of the names
+    eTSR_df['Engineer'] = eTSR_df['Engineer'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
+    eTSR_df['Project Manager'] = eTSR_df['Project Manager'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
+    eTSR_df['Business Unit'] = eTSR_df['Business Unit'].apply(lambda x: x.replace("&amp;", "&") if isinstance(x, str) else x)
+    
     # Inner join 
     combined_df = pd.merge(eDSR_df,eTSR_df, on=['Sales Order'], how='inner')
-    
     
     # Transformation 
     # 1. Filter values 
@@ -34,12 +38,7 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
     # 2. Turn blanks into nan
     combined_df = combined_df.fillna(np.nan)
     
-    # 3. Remove every odd occurance of the names
-    combined_df['Engineer'] = combined_df['Engineer'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
-    combined_df['Project Manager'] = combined_df['Project Manager'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
-    combined_df['Business Unit'] = combined_df['Business Unit'].apply(lambda x: x.replace("&amp;", "&") if isinstance(x, str) else x)
-    
-    # 4. Convert values into date datatyoe
+    # 3. Convert values into date datatyoe
     combined_df['Delivery AC Month'] = combined_df['Delivery AC Month'].dt.date # convert to none version of date
     
     combined_df['Date Creation'] = combined_df['Date Creation'].astype('datetime64[ns]')
@@ -48,17 +47,17 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
     combined_df['Date Creation'] = combined_df['Date Creation'].dt.date
     combined_df['Date Closed'] = combined_df['Date Closed'].dt.date
     
-    # 5. Sort the columns by alphabetical
+    # 4. Sort the columns by alphabetical
     combined_df = combined_df.reindex(sorted(combined_df.columns), axis=1)
     
-    # 6. Shift SO column to the front
+    # 5. Shift SO column to the front
     combined_df = combined_df[['Sales Order'] + [ col for col in combined_df.columns if col != 'Sales Order' ]]
     
-    # 7. Create 2 new columns
+    # 6. Create 2 new columns
     combined_df["Staging Status"] = None
     combined_df["Last Status Update"] = None
     
-    return eTSR_df, combined_df
+    return eTSR_df, eDSR_df, combined_df
 
 def transform_engineers_table(eTSR_df):
     engineers_df = pd.DataFrame()
@@ -79,8 +78,89 @@ def transform_engineers_table(eTSR_df):
     # 5. Reset the index and remove duplicate entries
     engineers_df = engineers_df.drop_duplicates().reset_index(drop=True)
     engineers_df.columns=["name"]
+    engineers_df['role'] = "engineer"
 
     return engineers_df
+
+def transform_projectmanagers_table(eTSR_df):
+    projectmanagers_df = pd.DataFrame()
+    projectmanagers_df['project_manager'] = pd.DataFrame(eTSR_df['Project Manager'])
+    
+    # 1. Replace NaN with an empty string to avoid issues with split
+    projectmanagers_df['project_manager'] = projectmanagers_df['project_manager'].fillna('')
+    
+    # 2. Split the entries by comma and space, explode the list-like values into separate rows, and strip whitespace
+    projectmanagers_df = projectmanagers_df.assign(project_manager=projectmanagers_df['project_manager'].str.split(', ')).explode('project_manager')
+    
+    # 3. Drop rows where project_manager are empty strings
+    projectmanagers_df = projectmanagers_df[projectmanagers_df['project_manager'] != '']
+    
+    # 4. Sort engineer names alphabetically
+    projectmanagers_df = projectmanagers_df.sort_values('project_manager')
+    
+    # 5. Reset the index and remove duplicate entries
+    projectmanagers_df = projectmanagers_df.drop_duplicates().reset_index(drop=True)
+    projectmanagers_df.columns=["name"]
+    projectmanagers_df['role'] = "project manager"
+    
+    return projectmanagers_df
+
+def transform_logistics_table(eDSR_df):
+    logistics_df = pd.DataFrame()
+    logistics_df['logs_pic'] = pd.DataFrame(eDSR_df['Logistics PIC'])
+    
+    # 1. Replace NaN with an empty string to avoid issues with split
+    logistics_df['logs_pic'] = logistics_df['logs_pic'].fillna('')
+    
+    # 2. Split the entries by comma and space, explode the list-like values into separate rows, and strip whitespace
+    logistics_df = logistics_df.assign(logs_pic=logistics_df['logs_pic'].str.split(', ')).explode('logs_pic')
+    
+    # 3. Drop rows where logs_pic are empty strings
+    logistics_df = logistics_df[logistics_df['logs_pic'] != '']
+    
+    # 4. Sort engineer names alphabetically
+    logistics_df = logistics_df.sort_values('logs_pic')
+    
+    # 5. Reset the index and remove duplicate entries
+    logistics_df = logistics_df.drop_duplicates().reset_index(drop=True)
+    logistics_df.columns=["name"]
+    logistics_df['role'] = "logistics"
+    
+    return logistics_df
+
+def transform_users_table(eTSR_df, eDSR_df, combined_df):
+    engineers_df = transform_engineers_table(eTSR_df)
+    projectmanagers_df = transform_projectmanagers_table(eTSR_df)
+    logistics_df = transform_logistics_table(eDSR_df)
+
+    # 1. Append all 3 dfs
+    users_df = pd.DataFrame()
+    users_df = pd.concat([projectmanagers_df, engineers_df, logistics_df], ignore_index=True)
+    
+    # 2. Generate email addresses based on names
+    def generate_email(name):
+        # Remove punctuation from the name
+        name = re.sub(r'[^\w\s]', '', name.lower())
+        # Split the name into parts
+        parts = name.split()
+        if len(parts) == 1:
+            # If there's only one part, use it as is
+            email = parts[0]
+        else:
+            # Otherwise, concatenate the first name, dot, last name
+            first_name = ''.join(parts[0:-1])
+            last_name = parts[-1]
+            email = first_name + '.' + last_name
+        email += '@global.ntt'
+        return email
+
+    # 3. Add the username and password as new columns to the DataFrame        
+    users_df['username'] = users_df['name'].apply(generate_email)
+    users_df['password'] = "P@ssw0rd"    # YT: need to hash password on database
+    
+    users_df = users_df[['username'] + [ col for col in users_df.columns if col != 'username' ]]
+    
+    return users_df
 
 def transform_staging_table(combined_df):
     staging_df = pd.DataFrame()
@@ -157,18 +237,21 @@ def push_combined_table_to_psql(combined_df):
     result = cursor.executemany(sql_insert_query, records)
     conn.commit()
 
-def push_engineers_table_to_psql(engineers_df):
+def push_users_table_to_psql(users_df):
     cursor, conn = psql_establish_connection()
     
-    sql_drop_query = "DROP TABLE IF EXISTS engineers_table"
+    sql_drop_query = "DROP TABLE IF EXISTS users_table"
     cursor.execute(sql_drop_query)
     conn.commit()
     
     
     # Create table
     sql_create_query = """
-    CREATE TABLE engineers_table (
-        name TEXT NOT NULL PRIMARY KEY
+    CREATE TABLE users_table (
+        username TEXT NOT NULL PRIMARY KEY,
+        name TEXT NOT NULL,
+        role TEXT NOT NULL,
+        password TEXT NOT NULL
     )
     """
     
@@ -176,12 +259,12 @@ def push_engineers_table_to_psql(engineers_df):
     conn.commit()
     
     sql_insert_query = """
-    INSERT INTO engineers_table (name) VALUES (%s)
+    INSERT INTO users_table (username, name, role, password) VALUES (%s, %s, %s, %s)
     """
-    engineers_list = engineers_df["name"]
-    records = [(name,) for name in engineers_list]
     
+    records = [tuple(x) for x in users_df.to_records(index=False)]
     result = cursor.executemany(sql_insert_query, records)
+    
     conn.commit()
     
     if conn:
@@ -226,10 +309,10 @@ def push_staging_table_to_psql(staging_df):
 eDSR_FILEPATH = r"C:\Users\candy.lim\OneDrive - NTT\InnoStage\eDSR.xlsx" # Sample
 eTSR_FILEPATH = r"C:\Users\candy.lim\OneDrive - NTT\InnoStage\TSRExport_20240412102507555.xls" # Sample
 
-eTSR_df, combined_df = transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH)
-engineers_df = transform_engineers_table(eTSR_df)
+eTSR_df, eDSR_df, combined_df = transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH)
+users_df = transform_users_table(eTSR_df, eDSR_df, combined_df)
 staging_df = transform_staging_table(combined_df)
 
 push_combined_table_to_psql(combined_df)
-push_engineers_table_to_psql(engineers_df)
+push_users_table_to_psql(users_df)
 push_staging_table_to_psql(staging_df)
