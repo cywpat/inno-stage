@@ -25,29 +25,73 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                     <tr className='hover:bg-blue-100'>
-                        <td className='p-3 text-sm'>123</td>
-                        <td className='p-3 text-sm flex flex-row'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Ready To Be Staged</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
+                        <td className='p-3 text-sm'>
+                            <span className='cursor-pointer'>123</span>
                         </td>
                         <td className='p-3 text-sm'>
-                            <span>
-                                <label htmlFor="my_modal_6" className='cursor-pointer'><MdOutlineEditCalendar /></label>
-                            </span>
+                            <div className='pb-1'>
+                                <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Ready To Be Staged</span>
+                            </div>
                         </td>
-                        <td className='p-3 text-sm'></td>
+                        <td className='p-3 text-sm'>
+                            <div className="flex gap-3">
+                                <div>
+                                    14/5/2024
+                                </div>
+                                <div className="pt-1">
+                                    <span>
+                                        <label htmlFor="my_modal_6" className='cursor-pointer'><MdOutlineEditCalendar /></label>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>                        
+                        <td className='p-3 text-sm'>
+                            <div className="flex gap-3">
+                                <div>
+                                    17/5/2024
+                                </div>
+                                <div className="pt-1">
+                                    <span>
+                                        <label htmlFor="my_modal_6" className='cursor-pointer'><MdOutlineEditCalendar /></label>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
                         <td className='p-3 text-sm'>2</td>
                     </tr>
                     <tr className='bg-slate-100 hover:bg-blue-100'>
-                        <td className='p-3 text-sm'>234</td>
-                        <td className='p-3 text-sm flex flex-row'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>Staging In Progress</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
+                        <td className='p-3 text-sm'>
+                            <span className='cursor-pointer'>234</span>
                         </td>
-                        <td className='p-3 text-sm'>14/4/2024
-                            <span className='pl-2 pt-1 cursor-pointer'><MdOutlineEditCalendar /></span>
+                        <td className='p-3 text-sm'>
+                            <div className='pb-1'>
+                                <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>Staging In Progress</span>
+                            </div>
                         </td>
-                        <td className='p-3 text-sm'></td>
+                        <td className='p-3 text-sm'>
+                            <div className="flex gap-3">
+                                <div>
+                                    14/5/2024
+                                </div>
+                                <div className="pt-1">
+                                    <span>
+                                        <label htmlFor="my_modal_6" className='cursor-pointer'><MdOutlineEditCalendar /></label>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td className='p-3 text-sm'>
+                            <div className="flex gap-3">
+                                <div>
+                                    14/5/2024
+                                </div>
+                                <div className="pt-1">
+                                    <span>
+                                        <label htmlFor="my_modal_6" className='cursor-pointer'><MdOutlineEditCalendar /></label>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
                         <td className='p-3 text-sm'>3</td>
                     </tr>
                 </tbody>

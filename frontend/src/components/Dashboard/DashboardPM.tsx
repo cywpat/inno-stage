@@ -73,45 +73,75 @@ const Dashboard = () => {
                 </thead>
                 <tbody>
                     <tr className='hover:bg-blue-100'>
-                        <td className='p-3 text-sm'>123</td>
-                        <td className='p-3 text-sm flex flex-row'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Received At OMNI</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
+                        <td className='p-3 text-sm'>
+                            <span className='cursor-pointer'>123</span>
                         </td>
                         <td className='p-3 text-sm'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>OMNI</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
+                            <div className='flex gap-3'>
+                                <div className='pb-1'>
+                                    <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Received At OMNI</span>
+                                </div>
+                            </div>
                         </td>
                         <td className='p-3 text-sm'>
-                            <span className="mr-2">
-                                <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Edison</span>
-                            </span>
-                            <span className="mr-2">
-                                <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Tesla</span>
-                            </span>
-                            <span>
-                                <label htmlFor="my_modal_6" className='cursor-pointer'><MdEditNote /></label>
-                            </span>
+                            <div className='flex gap-3'>
+                                <div className='pb-1'>
+                                    <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>OMNI</span>
+                                </div>
+                                <div className='cursor-pointer pt-1'>
+                                    <MdEditNote />
+                                </div>
+                            </div>
+                        </td>
+                        <td className='p-3 text-sm'>
+                            <div className='flex gap-3'>
+                                <div className='pb-1'>
+                                    <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Edison</span>
+                                </div>
+                                <div className='pt-1'>
+                                    <label className='cursor-pointer' htmlFor="my_modal_6"><MdEditNote /></label>
+                                </div>
+                            </div>
                         </td>
                         <td className='p-3 text-sm'>12-Aug-2023 09:30 AM</td>
                     </tr>
-                    <tr className='bg-slate-100 hover:bg-blue-100'>
-                        <td className='p-3 text-sm'>234</td>
-                        <td className='p-3 text-sm flex flex-row'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Received At KC</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
+                    <tr className='hover:bg-blue-100'>
+                        <td className='p-3 text-sm'>
+                            <span className='cursor-pointer'>234</span>
                         </td>
                         <td className='p-3 text-sm'>
-                            <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>KC</span>
-                            <span className='p-2 cursor-pointer'><MdEditNote /></span>
-                        </td>               
+                            <div className='flex gap-3'>
+                                <div className='pb-1'>
+                                    <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Received At KC</span>
+                                </div>
+                            </div>
+                        </td>
                         <td className='p-3 text-sm'>
-                            <span className="mr-2">
-                                <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Edison</span>
-                            </span>
-                            <span>
-                                <label htmlFor="my_modal_6" className='cursor-pointer'><MdEditNote /></label>
-                            </span>
+                            <div className='flex gap-3'>
+                                <div className='pb-1'>
+                                    <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>KC</span>
+                                </div>
+                                <div className='cursor-pointer pt-1'>
+                                    <MdEditNote />
+                                </div>
+                            </div>
+                        </td>
+                        <td className='p-3 text-sm'>
+                            <div className='flex'>
+                                <div className='pb-1'>
+                                    <span className='pr-1'>
+                                        <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Edison</span>
+                                    </span>
+                                </div>
+                                <div className='pb-1'>
+                                    <span className='pr-3'>
+                                        <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Tesla</span>
+                                    </span>
+                                </div>
+                                <div className='pt-1'>
+                                    <label className='cursor-pointer' htmlFor="my_modal_6"><MdEditNote /></label>
+                                </div>
+                            </div>
                         </td>
                         <td className='p-3 text-sm'>12-Aug-2023 09:30 AM</td>
                     </tr>
@@ -148,33 +178,29 @@ const Dashboard = () => {
                     </div>
                     <input
                         type="text"
-                        name="price"
-                        id="price"
+                        name="search"
+                        id="search"
                         className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
                         placeholder="Search"
                         onChange={handleSearchEngineerChange}
                     />
-                    <ul>
+                    {/* <ul>
                         {searchEngineerResults.map((user) => (
                         <li key={user.name}>{user.name}</li>
                         ))}
+                    </ul> */}
+                </div>
+                
+                <div className='overflow-x-auto h-32'>
+                    <ul className="m-2 flex flex-col">
+                        {searchEngineerResults.map((user) => (
+                            <li className="pl-2" key={user.name}>
+                                <input type="checkbox" />
+                                <label className='pl-2'>{user.name}</label>
+                            </li>
+                        ))}
                     </ul>
                 </div>
-
-                <span className="m-2 flex flex-col">
-                    <span className="pl-2">
-                        <input type="checkbox" checked />
-                        <label className='pl-2'>Edison</label>
-                    </span>
-                    <span className="pl-2">
-                        <input type="checkbox" checked />
-                        <label className='pl-2'>Tesla</label>
-                    </span>
-                    <span className="pl-2">
-                        <input type="checkbox" />
-                        <label className='pl-2'>Watt</label>
-                    </span>
-                </span>
                 <div className="modal-action">
                     <label htmlFor="my_modal_6" className="btn" onClick={handleAssignEngineerSubmit}>Submit</label>
                     <label htmlFor="my_modal_6" className="btn">Cancel</label>
