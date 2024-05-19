@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import Engineer from "./pages/Engineer";
 import ProjectManager from "./pages/ProjectManager";
 import Logistics from "./pages/Logistics";
-import AssignEngineer from "./pages/AssignEngineer";
 import Details from "./pages/Details";
 
 interface Link {
@@ -49,12 +48,6 @@ export const linksArray: Link[] = [
         notification: 0,
     },
     {
-        label: "Assign Engineer",
-        // icon: <FaSpider />,
-        to: "/assignengineer",
-        notification: 0,
-    },
-    {
         label: "Details",
         // icon: <FaCloudSun />,
         to: "/details",
@@ -72,7 +65,6 @@ const componentsMap: ComponentsMap = {
     '/engineer': Engineer,
     '/projectmanager': ProjectManager,
     '/logistics': Logistics,
-    '/assignengineer': AssignEngineer,
     '/details': Details,
 };
 

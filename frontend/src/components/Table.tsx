@@ -1,6 +1,5 @@
 import React from 'react';
 import DataTable, { TableColumn, TableProps, createTheme } from 'react-data-table-component';
-import { customStyles } from './styles';
 
 interface DataRow {
     id: number;
@@ -61,7 +60,7 @@ function Table<T> (props: TableProps<T>): JSX.Element {
                 highlightOnHover 
                 striped 
                 theme='why' 
-                customStyles={customStyles} 
+                // customStyles={customStyles} 
                 {...props} 
             />
         </>
