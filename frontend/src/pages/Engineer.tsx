@@ -8,6 +8,7 @@ import Title from "../components/Title";
 import { time } from "console";
 
 function Engineer() {
+    const title: string = 'Engineer Staging Status'
 
     interface DataRow {
         // id: number;
@@ -23,6 +24,7 @@ function Engineer() {
         sales_order: number; 
         engineer: string;
         staging_status: string;
+        hardware_received: string;
         date_drawn: string;
         date_returned: string;
         no_carton: number;
@@ -55,9 +57,10 @@ function Engineer() {
     const last_update: string = `${today.toDateString()} ${today.toTimeString()}`;
 
     const stagingData: StagingData[] = [
-        {'sales_order': 827697, 'engineer': 'Rui, Goh, Tay, Chen', 'staging_status': 'Ready To Be Staged', 'date_drawn': '', 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
-        {'sales_order': 254642, 'engineer': 'Lim, Lee, Zhao Chee, Tay, Tan', 'staging_status': 'Staging In Progress', 'date_drawn': date, 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
-        {'sales_order': 365634, 'engineer': 'Lim, Yang', 'staging_status': 'Staging Completed', 'date_drawn': date, 'date_returned': date, 'no_carton': 2, 'last_status_update': last_update}, 
+        {'sales_order': 827697, 'engineer': 'Rui, Goh, Tay, Chen', 'staging_status': 'Ready To Be Staged', 'hardware_received': 'Not Yet', 'date_drawn': '', 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
+        {'sales_order': 254642, 'engineer': 'Lim, Lee, Zhao Chee, Tay, Tan', 'staging_status': 'Staging In Progress', 'hardware_received': 'OMNI', 'date_drawn': date, 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
+        {'sales_order': 365634, 'engineer': 'Lim, Yang', 'staging_status': 'Staging Completed', 'hardware_received': 'KC', 'date_drawn': date, 'date_returned': date, 'no_carton': 2, 'last_status_update': last_update}, 
+        {'sales_order': 563580, 'engineer': '', 'staging_status': '', 'hardware_received': 'Not Yet', 'date_drawn': '', 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
     ]
 
 
@@ -84,16 +87,11 @@ function Engineer() {
     //         selector: row => row.no_carton,
     //     },
     // ];
-
-    const title: string = 'Engineer Staging Status'
     
     return (
         <>
             <Navbar />
             <Title title={title} />
-            {/* <div className='p-8'>
-                <h2 className='text-4xl font-bold'>Engineer Staging Status</h2>
-            </div> */}
 
             {/* <Table columns={columns} data={data} /> */}
             <DashboardEngineer 
