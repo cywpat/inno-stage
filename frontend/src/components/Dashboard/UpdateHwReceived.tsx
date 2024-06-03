@@ -27,6 +27,7 @@ const HwReceived = ({ stagingData }: { stagingData: StagingData }) => {
                             <option>Not Yet</option>
                             <option>OMNI</option>
                             <option>KC</option>
+                            <option>Client</option>
                         </select>
                     </span>
                     <div className="modal-action">

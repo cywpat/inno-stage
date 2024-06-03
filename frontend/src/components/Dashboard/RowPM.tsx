@@ -25,7 +25,9 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                 <td className='p-3 text-sm'>
                     <div className='flex gap-3'>
                         <div className='pb-1'>
-                            { stagingData.hardware_received == 'KC' 
+                            { stagingData.hardware_received == 'Client'
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-500'>Delivered To Client</span>
+                            : stagingData.hardware_received == 'KC' 
                             ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>Received At KC</span>
                             : stagingData.hardware_received == 'OMNI'
                             ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>Received At OMNI</span>
@@ -33,21 +35,25 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                             }
                             {/* <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Not Yet Received</span> */}
                         </div>
+                        <div className='pt-1'>
+                            <label htmlFor={hwInputId} className="cursor-pointer"><MdEditNote /></label>
+                        </div>
                     </div>
                 </td>
                 <td className='p-3 text-sm'>
                     <div className='flex gap-3'>
                         <div className='pb-1'>
-                            { stagingData.hardware_received == 'KC' 
-                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>{stagingData.hardware_received}</span>
-                            : stagingData.hardware_received == 'OMNI'
-                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>{stagingData.hardware_received}</span>
-                            : <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>{stagingData.hardware_received}</span>
+                            { stagingData.hardware_received == 'Client' 
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>{stagingData.staging_status}</span>
+                            : stagingData.hardware_received == 'OMNI' || stagingData.hardware_received == 'Not Yet'
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Not Received For Staging</span>
+                            : stagingData.staging_status == 'Ready To Be Staged'
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>{stagingData.staging_status}</span>
+                            : stagingData.staging_status == 'Staging In Progress'
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>{stagingData.staging_status}</span>
+                            : <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>{stagingData.staging_status}</span>
                             }
                             {/* <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Not Yet</span> */}
-                        </div>
-                        <div className='pt-1'>
-                            <label htmlFor={hwInputId} className="cursor-pointer"><MdEditNote /></label>
                         </div>
                     </div>
                 </td>
