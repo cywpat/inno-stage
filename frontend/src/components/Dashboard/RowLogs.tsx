@@ -1,5 +1,4 @@
 import React from "react";
-import { MdOutlineEditCalendar, MdEditNote } from "react-icons/md";
 
 interface StagingData {
     sales_order: number; 
@@ -13,8 +12,8 @@ interface StagingData {
 }
 
 const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
-    let engInputId: string = `assign_eng_${stagingData.sales_order}`
-    let hwInputId: string = `hw_received_${stagingData.sales_order}`
+    // let engInputId: string = `assign_eng_${stagingData.sales_order}`
+    // let hwInputId: string = `hw_received_${stagingData.sales_order}`
 
     return (
         <>
@@ -35,9 +34,9 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                             }
                             {/* <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Not Yet Received</span> */}
                         </div>
-                        <div className='pt-1'>
+                        {/* <div className='pt-1'>
                             <label htmlFor={hwInputId} className="cursor-pointer"><MdEditNote /></label>
-                        </div>
+                        </div> */}
                     </div>
                 </td>
                 <td className='p-3 text-sm'>
@@ -57,7 +56,7 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                         </div>
                     </div>
                 </td>
-                <td className='p-3 text-sm'>
+                {/* <td className='p-3 text-sm'>
                     <div className='flex'>
                         { stagingData.engineer 
                         ? stagingData.engineer.split(',').map((eng) => (
@@ -73,7 +72,7 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                             <label className='cursor-pointer' htmlFor={engInputId}><MdEditNote /></label>
                         </div>
                     </div>
-                </td>
+                </td> */}
                 <td className='p-3 text-sm'>{stagingData.last_status_update}</td>
             </tr>
         </>

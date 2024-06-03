@@ -40,7 +40,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 </thead>
                 <tbody>
                     {stagingData.map((data) => (
-                        <RowEngineer stagingData={data} />
+                        data.hardware_received == 'KC' ? <RowEngineer stagingData={data} /> : ''
                     ))}
                 </tbody>
             </table>

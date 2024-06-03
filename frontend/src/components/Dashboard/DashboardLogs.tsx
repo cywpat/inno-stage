@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import 'dayjs/locale/en-sg'
 import axios from 'axios';
-import RowPM from "./RowPM";
-import AssignEngineer from "./UpdateAssignEngineer";
-import HwReceived from "./UpdateHwReceived";
+import RowLogs from "./RowLogs";
 
 interface StagingData {
     sales_order: number; 
@@ -74,23 +72,22 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>SO #</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location Of Hardware</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Staging Status</th>
-                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Assigned Engineer</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Last Status Update</th>
                     </tr>
                 </thead>
                 <tbody>
                     {stagingData.map((data) => (
-                        <RowPM stagingData={data} />
+                        <RowLogs stagingData={data} />
                     ))}
                 </tbody>
             </table>
             
-            {stagingData.map((data) => (
+            {/* {stagingData.map((data) => (
                 <>
                     <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
                     <HwReceived stagingData={data} />
                 </>
-            ))}            
+            ))}             */}
         </div>
     );
 }
