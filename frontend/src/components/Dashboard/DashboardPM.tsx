@@ -70,8 +70,8 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 <thead className='border-b-2 border-black'>
                     <tr>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>SO #</th>
-                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Staging Status</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location of Hardware</th>
+                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Staging Status</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Assigned Engineer</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Last Status Update</th>
                     </tr>

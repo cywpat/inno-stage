@@ -5,6 +5,7 @@ class StagingTable(models.Model):
     engineer = models.CharField(max_length=200, blank=True, null=True)
     staging_status = models.CharField(max_length=50, blank=True, null=True)
     date_drawn = models.DateTimeField(blank=True, null=True)
+    date_returned = models.DateTimeField(blank=True, null=True)
     no_carton = models.IntegerField(blank=True,null=True)
     last_status_update = models.DateTimeField(blank=True, null=True)
     
@@ -43,7 +44,6 @@ class CombinedTable (models.Model):
     service_unit = models.CharField(max_length=250)
     tsr_number = models.CharField(max_length=250)
     hardware_received = models.CharField(max_length=250) # location of hardware
-    staging_status = models.CharField(max_length=250)
     last_status_update = models.DateTimeField(blank=True, null=True)
 
     class Meta:

@@ -1,6 +1,10 @@
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import { MdOutlineCancel } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 import axios from "axios";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 interface StagingData {
     sales_order: number; 
@@ -38,9 +42,12 @@ const AssignEngineer = ({ stagingData, searchEngineerResults }: { stagingData: S
                             { stagingData.engineer 
                             ? stagingData.engineer.split(',').map((eng) => (
                                 <div className='pb-1'>
-                                    <span className='pr-1'>
-                                        <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300 cursor-pointer'>{eng}</span>
-                                    </span>
+                                    <div className='pr-1'>
+                                        <div className='flex p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300 cursor-pointer'>
+                                            <span className="pr-1">{eng}</span>
+                                            <span className="pt-0.5"><RxCross2 color="red"/></span>
+                                        </div>
+                                    </div>
                                 </div>
                             ))
                             : <div>To Be Assigned</div>
@@ -64,12 +71,27 @@ const AssignEngineer = ({ stagingData, searchEngineerResults }: { stagingData: S
                     
                     <div className='overflow-x-auto h-32'>
                         <ul className="m-2 flex flex-col">
+                            <FormControlLabel 
+                                className='pl-2' 
+                                control={<Checkbox icon={<FaPlus />} checkedIcon={<FaMinus color="red"/>} />} 
+                                label='someone' 
+                            />
+                            <FormGroup>
                             {searchEngineerResults.map((user) => (
-                                <li className="pl-2" key={user.name}>
-                                    <input type="checkbox" />
-                                    <label className='pl-2'>{user.name}</label>
-                                </li>
+                                <FormControlLabel 
+                                    className='pl-2' 
+                                    control={<Checkbox 
+                                        icon={<FaPlus />} 
+                                        checkedIcon={<FaMinus color="red"/>} 
+                                        // onChange={}
+                                    />} 
+                                    label={user.name} />
+                                // <li className="pl-2" key={user.name}>
+                                //     <input type="checkbox" />
+                                //     <label className='pl-2'>{user.name}</label>
+                                // </li>
                             ))}
+                            </FormGroup>
                         </ul>
                     </div>
                     <div className="modal-action">

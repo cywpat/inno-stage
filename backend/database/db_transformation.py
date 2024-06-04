@@ -57,8 +57,7 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
     combined_df = combined_df[['Sales Order'] + [ col for col in combined_df.columns if col != 'Sales Order' ]]
     
     # 6. Create 3 new columns
-    combined_df["Hardware Received"] = None
-    combined_df["Staging Status"] = None
+    combined_df["Hardware Received"] = "KC"
     combined_df["Last Status Update"] = None
     
     return eTSR_df, eDSR_df, combined_df
@@ -171,6 +170,7 @@ def transform_staging_table(combined_df):
     staging_df = combined_df[['Sales Order', 'Engineer']]
     staging_df["Staging Status"] = "Not Yet" 
     staging_df["Date Drawn"] =  None
+    staging_df["Date Returned"] =  None
     staging_df["# Carton"]  = None
     staging_df["Last Status Update"]  = None
 
@@ -219,7 +219,6 @@ def push_combined_table_to_psql(combined_df):
         service_unit TEXT NOT NULL,
         tsr_number TEXT,
         hardware_received TEXT,
-        staging_status TEXT,
         last_status_update DATE
     )
     """
@@ -232,8 +231,8 @@ def push_combined_table_to_psql(combined_df):
         sales_order, business_unit, client_industry_sector, client_name, client_po_number, date_closed,
         date_creation, delivery_ac_month, delivery_fc_month, delivery_order_criteria,
         delivery_status, engineer, gp, logistics_pic, project_id, project_manager, revenue,
-        service_unit, tsr_number, hardware_received, staging_status, last_status_update
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        service_unit, tsr_number, hardware_received, last_status_update
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
     combined_df = combined_df.where(pd.notnull(combined_df), None)
@@ -289,6 +288,7 @@ def push_staging_table_to_psql(staging_df):
         engineer TEXT,
         staging_status TEXT NOT NULL,
         date_drawn DATE,
+        date_returned DATE,
         no_carton INT,
         last_status_update DATE
     )
@@ -299,8 +299,8 @@ def push_staging_table_to_psql(staging_df):
     
     sql_insert_query = """
     INSERT INTO staging_table (
-        sales_order, engineer, staging_status, date_drawn, no_carton, last_status_update
-    ) VALUES (%s, %s, %s, %s, %s, %s)
+        sales_order, engineer, staging_status, date_drawn, date_returned, no_carton, last_status_update
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     
     records = [tuple(x) for x in staging_df.to_records(index=False)]

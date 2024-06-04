@@ -21,15 +21,16 @@ function Engineer() {
     const [stagingData, setStagingData] = useState<StagingData[]>([]);
     /* staging data will look something like this, it is a list of dictionaries
         [
-        {'sales_order': '827697', 'engineer': 'Rui, Goh, Tay, Chen', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}, 
-        {'sales_order': '817940', 'engineer': 'Lim, Lee, Zhao Chee, Tay, Tan', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}, 
-        {'sales_order': '833151', 'engineer': 'Lim, Yang', 'staging_status': 'Not Yet', 'date_drawn': None, 'no_carton': None, 'last_status_update': None}
+            { "sales_order": "809056", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null },
+            { "sales_order": "801686", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null },
+            { "sales_order": "819876", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null } ]
         ]
     */
     useEffect(() => {
         // fetch data
         axios.get("http://localhost:8000/manyapps/staging_table/").then(
-            function (response) {                             
+            function (response) { 
+                console.log(response.data["data"])                            
                 setStagingData(response.data["data"])
             }
         ).catch(
