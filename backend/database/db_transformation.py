@@ -23,10 +23,13 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
                                   'Date Closed','Service Unit', 'Business Unit',
                                   'TSR Number', 'Project ID']]
     
-    # 3. Remove every odd occurance of the names
+    # 1. Remove every odd occurance of the names
     eTSR_df['Engineer'] = eTSR_df['Engineer'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
     eTSR_df['Project Manager'] = eTSR_df['Project Manager'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
     eTSR_df['Business Unit'] = eTSR_df['Business Unit'].apply(lambda x: x.replace("&amp;", "&") if isinstance(x, str) else x)
+    
+    # 2. Standardise "&"/"," to ","
+    eTSR_df['Client PO Number'] = eTSR_df['Client PO Number'].apply(lambda x: x.replace(" &", ",") if isinstance(x, str) else x)
     
     # Inner join 
     combined_df = pd.merge(eDSR_df,eTSR_df, on=['Sales Order'], how='inner')
@@ -53,7 +56,8 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
     # 5. Shift SO column to the front
     combined_df = combined_df[['Sales Order'] + [ col for col in combined_df.columns if col != 'Sales Order' ]]
     
-    # 6. Create 2 new columns
+    # 6. Create 3 new columns
+    combined_df["Hardware Received"] = None
     combined_df["Staging Status"] = None
     combined_df["Last Status Update"] = None
     
@@ -214,6 +218,7 @@ def push_combined_table_to_psql(combined_df):
         revenue FLOAT,
         service_unit TEXT NOT NULL,
         tsr_number TEXT,
+        hardware_received TEXT,
         staging_status TEXT,
         last_status_update DATE
     )
@@ -227,8 +232,8 @@ def push_combined_table_to_psql(combined_df):
         sales_order, business_unit, client_industry_sector, client_name, client_po_number, date_closed,
         date_creation, delivery_ac_month, delivery_fc_month, delivery_order_criteria,
         delivery_status, engineer, gp, logistics_pic, project_id, project_manager, revenue,
-        service_unit, tsr_number, staging_status, last_status_update
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        service_unit, tsr_number, hardware_received, staging_status, last_status_update
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
     combined_df = combined_df.where(pd.notnull(combined_df), None)

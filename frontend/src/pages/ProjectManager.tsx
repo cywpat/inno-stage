@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import DashboardPM from "../components/Dashboard/DashboardPM";
 import Navbar from "../components/Navbar";
 import Title from "../components/Title";
@@ -20,14 +21,20 @@ function ProjectManager() {
     const today: Date = new Date();
     const date: string = today.toDateString();
     const last_update: string = `${today.toDateString()} ${today.toLocaleTimeString()}`;
-
-    const stagingData: StagingData[] = [
-        {'sales_order': 827697, 'engineer': 'Rui, Goh, Tay, Chen', 'staging_status': 'Ready To Be Staged', 'hardware_received': 'Not Yet', 'date_drawn': '', 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
-        {'sales_order': 254642, 'engineer': 'Lim, Lee, Zhao Chee, Tay, Tan', 'staging_status': 'Staging In Progress', 'hardware_received': 'OMNI', 'date_drawn': date, 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
-        {'sales_order': 365634, 'engineer': 'Lim, Yang', 'staging_status': 'Staging Completed', 'hardware_received': 'KC', 'date_drawn': date, 'date_returned': date, 'no_carton': 2, 'last_status_update': last_update}, 
-        {'sales_order': 563580, 'engineer': '', 'staging_status': '', 'hardware_received': 'Not Yet', 'date_drawn': '', 'date_returned': '', 'no_carton': 2, 'last_status_update': last_update}, 
-
-    ]
+    
+    const [stagingData, setStagingData] = useState<StagingData[]>([]);
+    useEffect(() => {
+        // fetch data
+        axios.get("http://localhost:8000/manyapps/projectmanager_table/").then(
+            function (response) {                             
+                setStagingData(response.data["data"])
+            }
+        ).catch(
+            function (error) {
+                console.log(error)
+            }
+        )
+    }, []);
 
     return (
         <>

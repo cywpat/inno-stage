@@ -25,11 +25,14 @@ class UsersTable(models.Model):
 class CombinedTable (models.Model):
     sales_order = models.CharField(max_length=250, primary_key=True)
     business_unit = models.CharField(max_length=250)
-    client_industry = models.CharField(max_length=250)
+    client_industry_sector = models.CharField(max_length=250)
+    client_name = models.CharField(max_length=250)
     client_po_number = models.CharField(max_length=250)
     date_closed = models.DateTimeField(blank=True, null=True)
     date_creation = models.DateTimeField(blank=True, null=True)
-    delivery_order = models.CharField(max_length=250)
+    delivery_ac_month = models.DateTimeField(blank=True, null=True)
+    delivery_fc_month = models.CharField(max_length=250)
+    delivery_order_criteria = models.CharField(max_length=250)
     delivery_status = models.CharField(max_length=250)
     engineer = models.CharField(max_length=2500)
     gp = models.FloatField(blank=True, null=True)
@@ -39,6 +42,7 @@ class CombinedTable (models.Model):
     revenue = models.FloatField(blank=True, null=True)
     service_unit = models.CharField(max_length=250)
     tsr_number = models.CharField(max_length=250)
+    hardware_received = models.CharField(max_length=250) # location of hardware
     staging_status = models.CharField(max_length=250)
     last_status_update = models.DateTimeField(blank=True, null=True)
 
