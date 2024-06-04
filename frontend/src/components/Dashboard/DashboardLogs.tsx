@@ -26,43 +26,6 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
         {'name': 'c'}
         ]
     */
-    useEffect(() => {
-        // fetch data
-        axios.get("http://localhost:8000/manyapps/engineer_table/").then(
-            function (response) {                             
-                setData(response.data["data"])
-            }
-        ).catch(
-            function (error) {
-                console.log(error)
-            }
-        )
-    }, []);
-
-    const [searchEngineerResults, setSearchEngineerResults] = useState<{ name: string }[]>([]);
-
-    const handleSearchEngineerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const searchTerm = event.target.value.toLowerCase();
-
-        const filteredNames = data.filter((user) =>
-            user.name.toLowerCase().includes(searchTerm)
-        );
-
-        setSearchEngineerResults(filteredNames);
-    };
-    
-    const handleAssignEngineerSubmit = () => {
-         //  replace search results with something else
-        // get the SO number
-        const data = {
-                "sales_order": 840275,  // hardcode
-                "engineers": searchEngineerResults
-            }
-        axios.post("http://localhost:8000/manyapps/engineer_table/", { data })
-          .catch(error => {
-            console.error("Error fetching data:", error);
-          });
-      };
 
     return (
         <div className='px-8'>
@@ -82,12 +45,6 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 </tbody>
             </table>
             
-            {/* {stagingData.map((data) => (
-                <>
-                    <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
-                    <HwReceived stagingData={data} />
-                </>
-            ))}             */}
         </div>
     );
 }

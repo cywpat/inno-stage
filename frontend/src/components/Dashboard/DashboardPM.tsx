@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import 'dayjs/locale/en-sg'
+import 'dayjs/locale/en-sg';
 import axios from 'axios';
 import RowPM from "./RowPM";
 import AssignEngineer from "./UpdateAssignEngineer";
@@ -18,41 +18,39 @@ interface StagingData {
 }
 
 const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
+    const [searchEngineerResults, setSearchEngineerResults] = useState<{ name: string }[]>([]);
     const today = new Date();
 
-    const [data, setData] = useState<{ name: string }[]>([]);
-    /* data will look something like this, it is a list of dictionaries
-        [
-        {'name': 'a'}, 
-        {'name': 'b'}, 
-        {'name': 'c'}
-        ]
-    */
     useEffect(() => {
         // fetch data
         axios.get("http://localhost:8000/manyapps/engineer_table/").then(
             function (response) {                             
-                setData(response.data["data"])
+                setSearchEngineerResults(response.data["data"]);
+                /* data will look something like this, it is a list of dictionaries
+                    [
+                    {'name': 'a'}, 
+                    {'name': 'b'}, 
+                    {'name': 'c'}
+                    ]
+                */
             }
         ).catch(
             function (error) {
-                console.log(error)
+                console.log(error);
             }
-        )
+        );
     }, []);
-
-    const [searchEngineerResults, setSearchEngineerResults] = useState<{ name: string }[]>([]);
 
     const handleSearchEngineerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchTerm = event.target.value.toLowerCase();
 
-        const filteredNames = data.filter((user) =>
+        const filteredNames = searchEngineerResults.filter((user) =>
             user.name.toLowerCase().includes(searchTerm)
         );
 
         setSearchEngineerResults(filteredNames);
     };
-    
+
     const handleAssignEngineerSubmit = () => {
          //  replace search results with something else
         // get the SO number
@@ -72,7 +70,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 <thead className='border-b-2 border-black'>
                     <tr>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>SO #</th>
-                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location Of Hardware</th>
+                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>Location of Hardware</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Staging Status</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Assigned Engineer</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Last Status Update</th>
@@ -86,10 +84,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
             </table>
             
             {stagingData.map((data) => (
-                <>
-                    <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
-                    <HwReceived stagingData={data} />
-                </>
+                <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
             ))}            
         </div>
     );

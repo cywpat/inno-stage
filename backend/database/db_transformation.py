@@ -23,10 +23,13 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
                                   'Date Closed','Service Unit', 'Business Unit',
                                   'TSR Number', 'Project ID']]
     
-    # 3. Remove every odd occurance of the names
+    # 1. Remove every odd occurance of the names
     eTSR_df['Engineer'] = eTSR_df['Engineer'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
     eTSR_df['Project Manager'] = eTSR_df['Project Manager'].apply(lambda x: x if pd.isna(x) else ', '.join(x.split(', ')[1::2]))
     eTSR_df['Business Unit'] = eTSR_df['Business Unit'].apply(lambda x: x.replace("&amp;", "&") if isinstance(x, str) else x)
+    
+    # 2. Standardise "&"/"," to ","
+    eTSR_df['Client PO Number'] = eTSR_df['Client PO Number'].apply(lambda x: x.replace(" &", ",") if isinstance(x, str) else x)
     
     # Inner join 
     combined_df = pd.merge(eDSR_df,eTSR_df, on=['Sales Order'], how='inner')
@@ -53,8 +56,8 @@ def transform_combined_table(eDSR_FILEPATH, eTSR_FILEPATH):
     # 5. Shift SO column to the front
     combined_df = combined_df[['Sales Order'] + [ col for col in combined_df.columns if col != 'Sales Order' ]]
     
-    # 6. Create 2 new columns
-    combined_df["Staging Status"] = None
+    # 6. Create 3 new columns
+    combined_df["Hardware Received"] = "KC"
     combined_df["Last Status Update"] = None
     
     return eTSR_df, eDSR_df, combined_df
@@ -167,6 +170,7 @@ def transform_staging_table(combined_df):
     staging_df = combined_df[['Sales Order', 'Engineer']]
     staging_df["Staging Status"] = "Not Yet" 
     staging_df["Date Drawn"] =  None
+    staging_df["Date Returned"] =  None
     staging_df["# Carton"]  = None
     staging_df["Last Status Update"]  = None
 
@@ -214,7 +218,7 @@ def push_combined_table_to_psql(combined_df):
         revenue FLOAT,
         service_unit TEXT NOT NULL,
         tsr_number TEXT,
-        staging_status TEXT,
+        hardware_received TEXT,
         last_status_update DATE
     )
     """
@@ -227,7 +231,7 @@ def push_combined_table_to_psql(combined_df):
         sales_order, business_unit, client_industry_sector, client_name, client_po_number, date_closed,
         date_creation, delivery_ac_month, delivery_fc_month, delivery_order_criteria,
         delivery_status, engineer, gp, logistics_pic, project_id, project_manager, revenue,
-        service_unit, tsr_number, staging_status, last_status_update
+        service_unit, tsr_number, hardware_received, last_status_update
     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
@@ -284,6 +288,7 @@ def push_staging_table_to_psql(staging_df):
         engineer TEXT,
         staging_status TEXT NOT NULL,
         date_drawn DATE,
+        date_returned DATE,
         no_carton INT,
         last_status_update DATE
     )
@@ -294,8 +299,8 @@ def push_staging_table_to_psql(staging_df):
     
     sql_insert_query = """
     INSERT INTO staging_table (
-        sales_order, engineer, staging_status, date_drawn, no_carton, last_status_update
-    ) VALUES (%s, %s, %s, %s, %s, %s)
+        sales_order, engineer, staging_status, date_drawn, date_returned, no_carton, last_status_update
+    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
     
     records = [tuple(x) for x in staging_df.to_records(index=False)]
