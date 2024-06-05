@@ -10,6 +10,7 @@ import ProjectManager from "./pages/ProjectManager";
 import Logistics from "./pages/Logistics";
 import Details from "./pages/Details";
 import Finance from "./pages/Finance";
+import Navbar from "./components/Navbar";
 
 interface Link {
     label: string;
@@ -76,8 +77,6 @@ const componentsMap: ComponentsMap = {
     '/details': Details,
     '/finance': Finance,
 };
-
-import Navbar from "./components/Navbar";
 
 const AppRoutes: React.FC = () => {
     return (
