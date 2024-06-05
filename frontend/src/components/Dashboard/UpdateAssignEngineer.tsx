@@ -71,11 +71,7 @@ const AssignEngineer = ({ stagingData, searchEngineerResults }: { stagingData: S
                     
                     <div className='overflow-x-auto h-32'>
                         <ul className="m-2 flex flex-col">
-                            <FormControlLabel 
-                                className='pl-2' 
-                                control={<Checkbox icon={<FaPlus />} checkedIcon={<FaMinus color="red"/>} />} 
-                                label='someone' 
-                            />
+                            {/* checkout MUI Chip */}
                             <FormGroup>
                             {searchEngineerResults.map((user) => (
                                 <FormControlLabel 
