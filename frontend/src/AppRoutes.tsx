@@ -70,7 +70,7 @@ interface ComponentsMap {
 
 const componentsMap: ComponentsMap = {
     '/': HomePage,
-    '/login': Login,
+    '/login': LoginPage,
     '/engineer': Engineer,
     '/projectmanager': ProjectManager,
     '/logistics': Logistics,
