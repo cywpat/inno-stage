@@ -23,7 +23,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
 
     useEffect(() => {
         // fetch data
-        axios.get("http://localhost:8000/manyapps/engineer_table/").then(
+        axios.get("http://localhost:8000/manyapps/assignengineer_table/").then(
             function (response) {                             
                 setSearchEngineerResults(response.data["data"]);
                 /* data will look something like this, it is a list of dictionaries
@@ -58,7 +58,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 "sales_order": 840275,  // hardcode
                 "engineers": searchEngineerResults
             }
-        axios.post("http://localhost:8000/manyapps/engineer_table/", { data })
+        axios.post("http://localhost:8000/manyapps/assignengineer_table/", { data })
           .catch(error => {
             console.error("Error fetching data:", error);
           });
