@@ -17,7 +17,6 @@ class UsersTable(models.Model):
     username = models.CharField(max_length=250, primary_key=True)
     name = models.CharField(max_length=250)
     role = models.CharField(max_length=250)
-    password = models.CharField(max_length=250)
 
     class Meta:
         managed = True

@@ -10,6 +10,13 @@ const Navbar = () => {
         throw new Error("AuthContext must be used within an AuthProvider");
     }
 
+    const formatUsername = (email: string): string => {
+        const namePart = email.split('@')[0]; // Get the part before the "@"
+        const firstName = namePart.split('.')[0]; // Get the part before any "."
+        const capitalized = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+        return capitalized;
+    };
+
     const { user, logoutUser } = context;
 
     return (
@@ -26,8 +33,9 @@ const Navbar = () => {
                 <div className='flex-none'>
                     <a className='mr-6'>
                         {user ? <a onClick={logoutUser} style={{ cursor: "pointer" }} className='text-white'>Logout</a> : <a href='/login' className='text-white'>Login</a>}
-                        {user && typeof user === 'object' && 'username' in user && <h2 className='text-xl font-bold text-white'>Hello {user.username}</h2>}
+                        {user && typeof user === 'object' && 'username' in user && <h2 className='text-xl font-bold text-white'>Hello {formatUsername(user.username)}</h2>}
                     </a>
+
                 </div>
             </div>
         </>
