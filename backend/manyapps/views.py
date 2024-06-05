@@ -147,3 +147,11 @@ class LogisticsTableView(APIView):
         }
         return Response(context)
     
+class FinanceTableView(APIView):
+    def get(self, request):
+        combined_data = list(CombinedTable.objects.all().values('hardware_received'))
+        staging_data = list(StagingTable.objects.all().values('staging_status'))
+        context = {
+            "data": [combined_data, staging_data]
+        }
+        return Response(context)

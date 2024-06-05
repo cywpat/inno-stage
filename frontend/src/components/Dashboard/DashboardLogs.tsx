@@ -3,6 +3,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import 'dayjs/locale/en-sg'
 import axios from 'axios';
 import RowLogs from "./RowLogs";
+import HwReceived from "./UpdateHwReceived";
 
 interface StagingData {
     sales_order: number; 
@@ -44,6 +45,12 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                     ))}
                 </tbody>
             </table>
+
+            {stagingData.map((data) => (
+                <>
+                    <HwReceived stagingData={data} />
+                </>
+            ))} 
             
         </div>
     );

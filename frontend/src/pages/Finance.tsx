@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import DashboardPM from "../components/Dashboard/DashboardPM";
 import Navbar from "../components/Navbar";
 import Title from "../components/Title";
+import Charts from "../components/Charts";
 
-function ProjectManager() {
-    const title: string = 'Project Manager View';
+function Finance() {
+    const title: string = 'Finance View'
 
     interface StagingData {
         sales_order: number; 
@@ -17,17 +17,14 @@ function ProjectManager() {
         no_carton: number;
         last_status_update: string;
     }
-    
-    const today: Date = new Date();
-    const date: string = today.toDateString();
-    const last_update: string = `${today.toDateString()} ${today.toLocaleTimeString()}`;
-    
+
     const [stagingData, setStagingData] = useState<StagingData[]>([]);
+
     useEffect(() => {
         // fetch data
-        axios.get("http://localhost:8000/manyapps/projectmanager_table/").then(
-            function (response) {              
-                console.log(response.data["data"])               
+        axios.get("http://localhost:8000/manyapps/finance_table/").then(
+            function (response) {
+                console.log(response.data["data"])                  
                 setStagingData(response.data["data"])
             }
         ).catch(
@@ -36,14 +33,18 @@ function ProjectManager() {
             }
         )
     }, []);
-
+    
     return (
         <>
             <Navbar />
             <Title title={title} />
-            <DashboardPM stagingData={stagingData}/>
+
+            <Charts 
+                stagingData={stagingData} 
+            />
         </>
+
     );
 }
 
-export default ProjectManager;
+export default Finance;

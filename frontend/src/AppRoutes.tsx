@@ -8,6 +8,7 @@ import Engineer from "./pages/Engineer";
 import ProjectManager from "./pages/ProjectManager";
 import Logistics from "./pages/Logistics";
 import Details from "./pages/Details";
+import Finance from "./pages/Finance";
 
 interface Link {
     label: string;
@@ -52,6 +53,12 @@ export const linksArray: Link[] = [
         // icon: <FaCloudSun />,
         to: "/details",
         notification: 0,
+    },
+    {
+        label: "Finance",
+        // icon: <FaCloudSun />,
+        to: "/finance",
+        notification: 0,
     }
 ];
 
@@ -66,6 +73,7 @@ const componentsMap: ComponentsMap = {
     '/projectmanager': ProjectManager,
     '/logistics': Logistics,
     '/details': Details,
+    '/finance': Finance,
 };
 
 const AppRoutes: React.FC = () => {
