@@ -49,7 +49,6 @@ class EngineerTableView(APIView):
     def post(self, request):
         try:
             data = request.data.get('data')
-            print (data)
             sales_order = data["sales_order"]
             date = data["date"]
             update = data["update"]
@@ -162,6 +161,17 @@ class LogisticsTableView(APIView):
         }
         return Response(context)
     
+    def post(self, request):
+        try:
+            data = request.data.get('data')
+            sales_order = data["sales_order"]
+            location = data["hardware_received"]
+
+            CombinedTable.objects.filter(sales_order=sales_order).update(hardware_received=location)
+        except:
+            pass
+        
+        return Response() # return blank response if not frontend will throw an error
 class FinanceTableView(APIView):
     def get(self, request):
     
