@@ -1,14 +1,16 @@
 import React from "react";
 import { Route, Routes } from 'react-router-dom';
+import PrivateRoute from './utils/PrivateRoute';
+import { AuthProvider } from "./context/AuthContext";
 
-// import { linksArray } from "./components/Sidebar/Sidebar";
 import HomePage from "./pages/HomePage";
-import Login from "./pages/Login";
+import LoginPage from "./pages/LoginPage";
 import Engineer from "./pages/Engineer";
 import ProjectManager from "./pages/ProjectManager";
 import Logistics from "./pages/Logistics";
 import Details from "./pages/Details";
 import Finance from "./pages/Finance";
+import Navbar from "./components/Navbar";
 
 interface Link {
     label: string;
@@ -78,11 +80,17 @@ const componentsMap: ComponentsMap = {
 
 const AppRoutes: React.FC = () => {
     return (
-        <Routes>
-            {linksArray.map(link => (
-                <Route key={link.to} path={link.to} element={React.createElement(componentsMap[link.to])} />
-            ))}
-        </Routes>
+        <AuthProvider>
+            <Navbar/>
+            <Routes>
+                <Route path="/" element={<PrivateRoute element={<HomePage />} />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/Engineer" element={<PrivateRoute element={<Engineer />} />} />
+                <Route path="/Projectmanager" element={<PrivateRoute element={<ProjectManager />} />} />
+                <Route path="/Logistics" element={<PrivateRoute element={<Logistics />} />} />
+                <Route path="/Details" element={<PrivateRoute element={<Details />} />} />
+            </Routes>
+        </AuthProvider>
     );
 };
 

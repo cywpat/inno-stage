@@ -2,7 +2,7 @@ import React from "react";
 
 function HomePage() {
     return (
-        <div>Home Page</div>    
+        <div>You are logged to the Home Page</div>    
     );
 }
 

@@ -17,7 +17,6 @@ class UsersTable(models.Model):
     username = models.CharField(max_length=250, primary_key=True)
     name = models.CharField(max_length=250)
     role = models.CharField(max_length=250)
-    password = models.CharField(max_length=250)
 
     class Meta:
         managed = True
@@ -49,3 +48,13 @@ class CombinedTable (models.Model):
     class Meta:
         managed = True
         db_table = "combined_table"
+
+
+from django.contrib.auth.models import User
+class Note (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.TextField()
+
+    class Meta:
+        managed = True
+        db_table = "note"
