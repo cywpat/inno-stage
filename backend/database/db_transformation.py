@@ -159,7 +159,6 @@ def transform_users_table(eTSR_df, eDSR_df, combined_df):
 
     # 3. Add the username and password as new columns to the DataFrame        
     users_df['username'] = users_df['name'].apply(generate_email)
-    users_df['password'] = "P@ssw0rd"    # YT: need to hash password on database
     
     users_df = users_df[['username'] + [ col for col in users_df.columns if col != 'username' ]]
     
@@ -255,7 +254,6 @@ def push_users_table_to_psql(users_df):
         username TEXT NOT NULL PRIMARY KEY,
         name TEXT NOT NULL,
         role TEXT NOT NULL,
-        password TEXT NOT NULL
     )
     """
     
@@ -263,7 +261,7 @@ def push_users_table_to_psql(users_df):
     conn.commit()
     
     sql_insert_query = """
-    INSERT INTO users_table (username, name, role, password) VALUES (%s, %s, %s, %s)
+    INSERT INTO users_table (username, name, role) VALUES (%s, %s, %s)
     """
     
     records = [tuple(x) for x in users_df.to_records(index=False)]

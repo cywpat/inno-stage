@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardPM from "../components/Dashboard/DashboardPM";
-import Navbar from "../components/Navbar";
 import Title from "../components/Title";
 
 function ProjectManager() {
@@ -39,7 +38,6 @@ function ProjectManager() {
 
     return (
         <>
-            <Navbar />
             <Title title={title} />
             <DashboardPM stagingData={stagingData}/>
         </>

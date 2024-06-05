@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardEngineer from "../components/Dashboard/DashboardEngineer";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import Title from "../components/Title";
 
 function Engineer() {
@@ -46,7 +45,6 @@ function Engineer() {
 
     return (
         <>
-            <Navbar />
             <Title title={title} />
             <DashboardEngineer 
                 stagingData={stagingData}
