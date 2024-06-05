@@ -84,7 +84,10 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
             </table>
             
             {stagingData.map((data) => (
-                <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
+                <>
+                    <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
+                    <HwReceived stagingData={data} />
+                </>
             ))}            
         </div>
     );
