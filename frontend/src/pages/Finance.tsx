@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import Title from "../components/Title";
 import Charts from "../components/Charts";
 
@@ -36,7 +35,6 @@ function Finance() {
     
     return (
         <>
-            <Navbar />
             <Title title={title} />
 
             <Charts 

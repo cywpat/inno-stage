@@ -4,7 +4,7 @@ import requests
 from .models import StagingTable, UsersTable, CombinedTable
 from django.db.models import F, Value, Q, CharField
 from django.db.models.functions import Replace
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Count
 
 # Staging Table
 class StagingTableView(APIView):
@@ -149,9 +149,15 @@ class LogisticsTableView(APIView):
     
 class FinanceTableView(APIView):
     def get(self, request):
-        combined_data = list(CombinedTable.objects.all().values('hardware_received'))
-        staging_data = list(StagingTable.objects.all().values('staging_status'))
+    
+        count_hardware_received = list(CombinedTable.objects.values('hardware_received').annotate(count=Count('hardware_received'))) 
+        count_hardware_received.append ({ 'total_hardware_received': len(CombinedTable.objects.values('hardware_received'))}) 
+
+
+        count_staging_status = list(StagingTable.objects.values('staging_status').annotate(count=Count('staging_status')))
+        count_staging_status .append ({ 'total_staging_status ': len(StagingTable.objects.values('staging_status'))})     
+
         context = {
-            "data": [combined_data, staging_data]
+            "data": [count_hardware_received, count_staging_status]
         }
         return Response(context)
