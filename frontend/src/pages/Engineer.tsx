@@ -27,9 +27,8 @@ function Engineer() {
     */
     useEffect(() => {
         // fetch data
-        axios.get("http://localhost:8000/manyapps/staging_table/").then(
-            function (response) { 
-                console.log(response.data["data"])                            
+        axios.get("http://localhost:8000/manyapps/engineer_table/").then(
+            function (response) {                      
                 setStagingData(response.data["data"])
             }
         ).catch(

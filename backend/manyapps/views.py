@@ -6,8 +6,7 @@ from django.db.models import F, Value, Q, CharField
 from django.db.models.functions import Replace
 from django.db.models import OuterRef, Subquery, Count
 
-# Staging Table
-class StagingTableView(APIView):
+class EngineerTableView(APIView):
     def get(self, request):
         try:
             # staging_data = list(StagingTable.objects.all().values())
@@ -46,8 +45,26 @@ class StagingTableView(APIView):
         except Exception as e:
             print (e)
             return Response({"error": "An error occurred"})
+    
+    def post(self, request):
+        try:
+            data = request.data.get('data')
+            print (data)
+            sales_order = data["sales_order"]
+            date = data["date"]
+            update = data["update"]
+
+            # 1. Update the last_status_update field in the CombinedTable
+            if update ==  "drawn":
+                StagingTable.objects.filter(sales_order=sales_order).update(date_drawn=date)
+            elif update == "returned":
+                StagingTable.objects.filter(sales_order=sales_order).update(date_returned=date)
+        except:
+            pass
         
-class EngineerTableView(APIView):
+        return Response() # return blank response if not frontend will throw an error
+
+class AssignEngineerTableView(APIView):
     def get(self, request):
         engineer_data = list(UsersTable.objects.filter(role='engineer').values('name'))
         """ engineer_data will look something like this
@@ -83,8 +100,6 @@ class EngineerTableView(APIView):
 
         return Response() # return blank response if not frontend will throw an error
     
-
-# combined table view for PM
 class ProjectManagerTableView(APIView):
     def get(self, request):
         

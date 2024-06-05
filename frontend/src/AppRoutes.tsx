@@ -86,11 +86,15 @@ const AppRoutes: React.FC = () => {
             <Routes>
                 <Route path="/" element={<PrivateRoute element={<HomePage />} />} />
                 <Route path="/login" element={<LoginPage />} />
-                <Route path="/Engineer" element={<PrivateRoute element={<Engineer />} />} />
+                {/* <Route path="/Engineer" element={<PrivateRoute element={<Engineer />} />} />
                 <Route path="/Projectmanager" element={<PrivateRoute element={<ProjectManager />} />} />
-                <Route path="/Logistics" element={<PrivateRoute element={<Logistics />} />} />
+                <Route path="/Logistics" element={<PrivateRoute element={<Logistics />} />} /> */}
                 <Route path="/Details" element={<PrivateRoute element={<Details />} />} />
-                <Route path="/Finance" element={<PrivateRoute element={<Finance />} />} />
+                {/* <Route path="/Finance" element={<PrivateRoute element={<Finance />} />} /> */}
+                <Route path="/Engineer" element={<Engineer />} />   
+                <Route path="/Projectmanager" element={<ProjectManager />} />
+                <Route path="/Logistics" element={<Logistics />} />
+                <Route path="/Finance"  element={<Finance />} />
             </Routes>
         </AuthProvider>
     );
