@@ -1,6 +1,5 @@
 import React from 'react';
 import {} from './styles/globalStyles'
-import Dashboard from './components/Dashboard/DashboardEngineer';
 import Routes from './AppRoutes';
 
 const App: React.FC = () => {

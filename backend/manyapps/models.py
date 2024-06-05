@@ -49,3 +49,13 @@ class CombinedTable (models.Model):
     class Meta:
         managed = True
         db_table = "combined_table"
+
+
+from django.contrib.auth.models import User
+class Note (models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.TextField()
+
+    class Meta:
+        managed = True
+        db_table = "note"

@@ -11,15 +11,11 @@ const Login = () => {
     return (
         <div className="login-page">
                 <div className="header">
-                    <div className="text">Sign up</div>
+                    <div className="text">Inno-Stage</div>
                     <div className="underline"></div>
                 </div>
 
                 <div className="inputs">
-                    {action === "Login" ? <div></div> : <div className="input">
-                        <img src={user_icon} alt=" " />
-                        <input type="text" placeholder="Name" />
-                    </div>}
 
                     <div className="input">
                         <img src={email_icon} alt=" " />
@@ -30,10 +26,9 @@ const Login = () => {
                         <input type="password" placeholder="Password" />
                     </div>
                 </div>
-                <div className="forget-password">Lost Password? <span>Click Here to Reset</span></div>
+
                 <div className="submit-container">
-                    <div className={action === "Login" ? "submit gray" : "submit"} onClick={() => setAction("Sign Up")}>Sign Up</div>
-                    <div className={action === "Sign Up" ? "submit gray" : "submit"} onClick={() => setAction("Login")}>Login</div>
+                    <div className={action === "Login" ? "submit gray" : "submit"} onClick={() => setAction("Login")}>Login</div>
                 </div>
         </div>
     )

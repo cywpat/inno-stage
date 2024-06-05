@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../components/Navbar";
 import Title from "../components/Title";
 import DashboardLogs from "../components/Dashboard/DashboardLogs";
 
@@ -47,7 +46,6 @@ function Logistics() {
     
     return (
         <>
-            <Navbar />
             <Title title={title} />
 
             <DashboardLogs 
