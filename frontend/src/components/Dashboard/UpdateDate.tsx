@@ -55,9 +55,6 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
             .catch(error => {
               console.error("Error fetching data:", error);
             });
-
-            // Refresh the table data after posting the new date
-            window.location.reload();
         } catch (error) {
             console.log(error);
         }

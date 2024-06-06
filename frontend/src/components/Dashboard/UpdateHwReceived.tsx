@@ -31,7 +31,7 @@ const HwReceived = ({ stagingData }: { stagingData: StagingData }) => {
             .catch(error => {
               console.error("Error fetching data:", error);
             });
-            window.location.reload();
+         
         } catch (error) {
             console.log(error);
         }

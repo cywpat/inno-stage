@@ -38,8 +38,8 @@ const RowEngineer = ({ stagingData }: { stagingData: StagingData }) => {
                         { stagingData.date_returned 
                         ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>Staging Completed</span>
                         : stagingData.date_drawn 
-                        ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>Staging In Progress</span>
-                        : <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Ready To Be Staged</span>
+                        ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-purple-300'>Staging In Progress</span>
+                        : <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>Ready To Be Staged</span>
                         }
                     </div>
                 </td>
