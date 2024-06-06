@@ -4,7 +4,7 @@ import DashboardPM from "../components/Dashboard/DashboardPM";
 import Title from "../components/Title";
 
 function ProjectManager() {
-    const title: string = 'Project Manager View';
+    const title: string = 'Project Manager Overview';
 
     interface StagingData {
         sales_order: number; 

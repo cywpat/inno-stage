@@ -24,7 +24,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
     useEffect(() => {
         // fetch data
         axios.get("http://localhost:8000/manyapps/assignengineer_table/").then(
-            function (response) {                             
+            function (response) { 
                 setSearchEngineerResults(response.data["data"]);
                 /* data will look something like this, it is a list of dictionaries
                     [
@@ -78,16 +78,13 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                 </thead>
                 <tbody>
                     {stagingData.map((data) => (
-                        <RowPM stagingData={data} />
+                            <RowPM stagingData={data} />
                     ))}
                 </tbody>
             </table>
             
             {stagingData.map((data) => (
-                <>
                     <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
-                    <HwReceived stagingData={data} />
-                </>
             ))}            
         </div>
     );
