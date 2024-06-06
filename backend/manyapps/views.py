@@ -45,7 +45,7 @@ class EngineerTableView(APIView):
         try:
             data = request.data.get('data')
             sales_order = data["sales_order"]
-            date = data["date"]
+            date = data["date"] 
             update = data["update"]
 
             today = datetime.datetime.now()
