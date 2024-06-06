@@ -4,7 +4,7 @@ import Title from "../components/Title";
 import Charts from "../components/Charts";
 
 function Finance() {
-    const title: string = 'Finance View'
+    const title: string = 'Finance Overview'
 
     interface StagingData {
         sales_order: number; 
@@ -17,7 +17,7 @@ function Finance() {
         last_status_update: string;
     }
 
-    const [stagingData, setStagingData] = useState<StagingData[]>([]);
+    const [stagingData, setStagingData] = useState<StagingData[][]>([]);
 
     useEffect(() => {
         // fetch data
@@ -38,7 +38,9 @@ function Finance() {
             <Title title={title} />
 
             <Charts 
-                stagingData={stagingData} 
+                // hardwareData={stagingData[0]} 
+                // stagingData={stagingData[1]}
+                stagingData={stagingData}
             />
         </>
 
