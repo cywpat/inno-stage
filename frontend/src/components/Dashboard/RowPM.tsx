@@ -26,7 +26,7 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                     <div className='flex gap-3'>
                         <div className='pb-1'>
                             { stagingData.hardware_received == 'Client'
-                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-500'>Delivered To Client</span>
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-[#4bfc38]'>Delivered To Client</span>
                             : stagingData.hardware_received == 'KC' 
                             ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>Received At KC</span>
                             : stagingData.hardware_received == 'OMNI'
