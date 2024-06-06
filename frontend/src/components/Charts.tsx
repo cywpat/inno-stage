@@ -72,9 +72,14 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
         { id: 3, value: 2, label: 'Delivered To Client' }, 
     ]
 
-    const size = {
+    const sizeBig = {
         width: 600, 
         height: 300,
+    }
+
+    const sizeSmall = {
+        width: 400, 
+        height: 200,
     }
     
     return (
@@ -120,7 +125,7 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                   fontWeight: 'bold',
                                 },
                             }}
-                            {...size}
+                            {...sizeBig}
                         />
                     </div>
                 </Grid>                
@@ -153,17 +158,17 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                   fontWeight: 'bold',
                                 },
                             }}
-                            {...size}
+                            {...sizeBig}
                         />
                     </div>
                 </Grid>
             </Grid>
 
             <h3 className='font-bold text-center text-2xl m-2 bg-gray-300 rounded-md'>Number of days in KC</h3>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} className='mb-5'>
                 <Grid item xs={4}>
                     <div>
-                        <h4 className='font-bold text-center text-2xl m-2 bg-gray-100 rounded-md'>Ready To Be Staged </h4>
+                        <h4 className='font-bold text-center text-2xl m-2 mb-5 bg-gray-100 rounded-md'>Ready To Be Staged </h4>
                         <PieChart
                             series={[
                                 {
@@ -172,15 +177,15 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                         { id: 0, value: 4, label: '0 days', color: '#86efac' }, // green
                                         { id: 1, value: 15, label: '1 to 7 days', color: '#d8b4fe' }, // purple
                                         { id: 2, value: 3, label: '7 to 14 days', color: '#fde047' }, // amber
-                                        { id: 3, value: 0, label: '14 days to 21 days', color: '#fca5a5' }, // red
+                                        { id: 3, value: 0, label: '14 to 21 days', color: '#fca5a5' }, // red
                                     ],
                                     arcLabel: (item) => `${item.value}`,
                                     arcLabelMinAngle: 45,
-                                    innerRadius: 60, 
-                                    outerRadius: 120, 
+                                    innerRadius: 40, 
+                                    outerRadius: 100, 
                                     paddingAngle: 2, 
                                     cornerRadius: 5,
-                                    cx: '50%',
+                                    cx: '45%',
                                     highlightScope: { fade: 'global', highlight: 'item' },
                                     faded: { innerRadius: 30, additionalRadius: -15, color: 'gray' },
                                 },
@@ -191,13 +196,18 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                   fontWeight: 'bold',
                                 },
                             }}
-                            {...size}
+                            {...sizeSmall}
+                            slotProps={{
+                                legend: {
+                                    padding: 0,
+                                },
+                            }}  
                         />
                     </div>
                 </Grid>                
                 <Grid item xs={4}>
                     <div>
-                        <h4 className='font-bold text-center text-2xl m-2 bg-gray-100 rounded-md'>Staging In Progress</h4>
+                        <h4 className='font-bold text-center text-2xl m-2 mb-5 bg-gray-100 rounded-md'>Staging In Progress</h4>
                         <PieChart
                             // color={palette}
                             series={[
@@ -206,12 +216,12 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                         { id: 0, value: 0, label: '0 days', color: '#86efac' }, // green
                                         { id: 1, value: 1, label: '1 to 7 days', color: '#d8b4fe' }, // purple
                                         { id: 2, value: 6, label: '7 to 14 days', color: '#fde047' }, // amber
-                                        { id: 3, value: 0, label: '14 days to 21 days', color: '#fca5a5' }, // red
+                                        { id: 3, value: 0, label: '14 to 21 days', color: '#fca5a5' }, // red
                                     ],
                                     arcLabel: (item) => `${item.value}`,
                                     arcLabelMinAngle: 45,
-                                    innerRadius: 60, 
-                                    outerRadius: 120, 
+                                    innerRadius: 40, 
+                                    outerRadius: 100, 
                                     paddingAngle: 2, 
                                     cornerRadius: 5,
                                     cx: '50%',
@@ -225,13 +235,18 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                   fontWeight: 'bold',
                                 },
                             }}
-                            {...size}
+                            {...sizeSmall}
+                            slotProps={{
+                                legend: {
+                                    padding: 0,
+                                },
+                            }}  
                         />
                     </div>
                 </Grid>
                 <Grid item xs={4}>
                     <div>
-                        <h4 className='font-bold text-center text-2xl m-2 bg-gray-100 rounded-md'>Staging Completed</h4>
+                        <h4 className='font-bold text-center text-2xl m-2 mb-5 bg-gray-100 rounded-md'>Staging Completed</h4>
                         <PieChart
                             // color={palette}
                             series={[
@@ -240,12 +255,12 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                         { id: 0, value: 1, label: '0 days', color: '#86efac' }, // green
                                         { id: 1, value: 1, label: '1 to 7 days', color: '#d8b4fe' }, // purple
                                         { id: 2, value: 0, label: '7 to 14 days', color: '#fde047' }, // amber
-                                        { id: 3, value: 0, label: '14 days to 21 days', color: '#fca5a5' }, // red
+                                        { id: 3, value: 0, label: '14 to 21 days', color: '#fca5a5' }, // red
                                     ],
                                     arcLabel: (item) => `${item.value}`,
                                     arcLabelMinAngle: 45,
-                                    innerRadius: 60, 
-                                    outerRadius: 120, 
+                                    innerRadius: 40, 
+                                    outerRadius: 100, 
                                     paddingAngle: 2, 
                                     cornerRadius: 5,
                                     cx: '50%',
@@ -259,7 +274,12 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                   fontWeight: 'bold',
                                 },
                             }}
-                            {...size}
+                            {...sizeSmall}
+                            slotProps={{
+                                legend: {
+                                    padding: 0,
+                                },
+                            }}  
                         />
                     </div>
                 </Grid>
