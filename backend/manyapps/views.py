@@ -45,7 +45,7 @@ class EngineerTableView(APIView):
         try:
             data = request.data.get('data')
             sales_order = data["sales_order"]
-            date = data["date"]
+            date = data["date"] 
             update = data["update"]
 
             today = datetime.datetime.now()
@@ -165,7 +165,66 @@ class LogisticsTableView(APIView):
     
 class FinanceTableView(APIView):
     def get(self, request):
-    
+        from django.db.models import Count, F, ExpressionWrapper, fields
+        from datetime import datetime, timedelta
+        from django.db.models import Q
+
+        # Step 1: Join CombinedTable and StagingTable on sales_order and filter the results
+        data = (StagingTable.objects
+                # .filter(sales_order__in=CombinedTable.objects.filter(hardware_received='KC').values('sales_order'))
+                .filter(staging_status__in=["Staging In Progress", "Ready To Be Staged", "Staging Completed"])
+                .values('staging_status', 'date_drawn', 'date_returned'))
+
+        # Step 2: Calculate the number of days
+        today = datetime.now().date()
+        for entry in data:
+            if entry['date_drawn']:
+                date_drawn = entry['date_drawn']
+                if entry['date_returned']:
+                    date_returned = entry['date_returned']
+                    days_diff = (date_returned - date_drawn).days
+                else:
+                    days_diff = (today - date_drawn).days
+                entry['days_diff'] = days_diff
+            else:
+                entry['days_diff'] = None
+
+        # Step 3: Group the results by staging status and into the specified categories
+        days_data = {
+            'Staging In Progress': {
+                '0 days': 0,
+                '1 to 7 days': 0,
+                '7 days to 14 days': 0,
+                '14 days to 21 days': 0,
+            },
+            'Ready To Be Staged': {
+                '0 days': 0,
+                '1 to 7 days': 0,
+                '7 days to 14 days': 0,
+                '14 days to 21 days': 0,
+            },
+            'Staging Completed': {
+                '0 days': 0,
+                '1 to 7 days': 0,
+                '7 days to 14 days': 0,
+                '14 days to 21 days': 0,
+            },
+        }
+
+        for entry in data:
+            staging_status = entry['staging_status']
+            days_diff = entry['days_diff']
+            if days_diff is not None:
+                if days_diff == 0:
+                    days_data[staging_status]['0 days'] += 1
+                elif 1 <= days_diff <= 14:
+                    days_data[staging_status]['1 to 7 days'] += 1
+                elif 15 <= days_diff <= 60:
+                    days_data[staging_status]['7 days to 14 days'] += 1
+                else:
+                    days_data[staging_status]['14 days to 21 days'] += 1
+
+    ##################################################
         count_hardware_received = list(CombinedTable.objects.values('hardware_received').annotate(count=Count('hardware_received'))) 
         count_hardware_received.append ({ 'total_hardware_received': len(CombinedTable.objects.values('hardware_received'))}) 
 
@@ -173,6 +232,6 @@ class FinanceTableView(APIView):
         count_staging_status .append ({ 'total_staging_status ': len(StagingTable.objects.values('staging_status'))})     
 
         context = {
-            "data": [count_hardware_received, count_staging_status]
+            "data": [count_hardware_received, count_staging_status, days_data]
         }
         return Response(context)

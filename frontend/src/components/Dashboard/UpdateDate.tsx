@@ -44,10 +44,9 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
             toast.error("Please acknowledge that you are returning the hardware.");
             return;
         }
-
         const data = {
             sales_order: stagingData.sales_order, 
-            date: date?.format('YYYY-MM-DD'), // Format the date
+            date: date,
             update: update
         };
         console.log(data)
@@ -85,9 +84,6 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
             .catch(error => {
               console.error("Error fetching data:", error);
             });
-
-            // Refresh the table data after posting the new date
-            window.location.reload();
         } catch (error) {
             console.log(error);
         }
