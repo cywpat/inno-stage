@@ -4,7 +4,7 @@ import Title from "../components/Title";
 import DashboardLogs from "../components/Dashboard/DashboardLogs";
 
 function Logistics() {
-    const title: string = 'Logistics View'
+    const title: string = 'Logistics Overview'
 
     interface StagingData {
         sales_order: number; 

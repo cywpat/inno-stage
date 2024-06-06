@@ -98,10 +98,10 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                             series={[
                                 {
                                     data: [
-                                        { id: 0, value: 14, label: 'Not Yet Received', color: '#fc3838' }, 
-                                        { id: 1, value: 3, label: 'Received At OMNI', color: '#fcf938' }, 
-                                        { id: 2, value: 29, label: 'Received At KC', color: '#bb38fc' }, 
-                                        { id: 3, value: 1, label: 'Delivered To Client', color: '#4bfc38' }, 
+                                        { id: 0, value: 14, label: 'Not Yet Received', color: '#fca5a5' }, // red
+                                        { id: 1, value: 3, label: 'Received At OMNI', color: '#fde047' }, // amber
+                                        { id: 2, value: 29, label: 'Received At KC', color: '#d8b4fe' }, // purple
+                                        { id: 3, value: 1, label: 'Delivered To Client', color: '#86efac' }, // green
                                     ],
                                     arcLabel: (item) => `${item.value}`,
                                     arcLabelMinAngle: 45,
@@ -132,9 +132,9 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                             series={[
                                 {
                                     data: [                            
-                                        { id: 0, value: 33, label: 'Ready To Be Staged', color: '#fcf938' }, 
-                                        { id: 1, value: 7, label: 'Staging In Progress', color: '#bb38fc' }, 
-                                        { id: 2, value: 7, label: 'Staging Completed', color: '#4bfc38' }, 
+                                        { id: 0, value: 21, label: 'Ready To Be Staged', color: '#fde047' }, // amber
+                                        { id: 1, value: 7, label: 'Staging In Progress', color: '#d8b4fe' }, // purple
+                                        { id: 2, value: 2, label: 'Staging Completed', color: '#86efac' }, // green
                                     ],
                                     arcLabel: (item) => `${item.value}`,
                                     arcLabelMinAngle: 45,
