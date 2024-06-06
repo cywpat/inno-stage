@@ -90,10 +90,14 @@ const AppRoutes: React.FC = () => {
                 <Route path="/Logistics" element={<PrivateRoute element={<Logistics />} />} /> */}
                 <Route path="/Details" element={<PrivateRoute element={<Details />} />} />
                 {/* <Route path="/Finance" element={<PrivateRoute element={<Finance />} />} /> */}
+<<<<<<< Updated upstream
                 <Route path="/Engineer" element={<Engineer />} />   
                 <Route path="/Projectmanager" element={<ProjectManager />} />
                 <Route path="/Logistics" element={<Logistics />} />
                 <Route path="/Finance"  element={<Finance />} />
+=======
+                <Route path="/Finance" element={<Finance />} />
+>>>>>>> Stashed changes
             </Routes>
         </AuthProvider>
     );
