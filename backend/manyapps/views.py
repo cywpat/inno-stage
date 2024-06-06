@@ -5,41 +5,36 @@ from .models import StagingTable, UsersTable, CombinedTable
 from django.db.models import F, Value, Q, CharField
 from django.db.models.functions import Replace
 from django.db.models import OuterRef, Subquery, Count
+import datetime
 
 class EngineerTableView(APIView):
     def get(self, request):
         try:
             # staging_data = list(StagingTable.objects.all().values())
             # HARDCODE: filter to "David Hein" for now
-            engineer_name='David Hein'
 
-            # Step 1: Filter rows where 'D' is present in the engineer column
-            queryset = StagingTable.objects.filter(Q(engineer__contains = engineer_name))
+            # 1. Filter the CombinedTable for rows where engineer contains 'David Hein'
+            combined_data = list(CombinedTable.objects.filter(engineer__contains='David Hein').values('sales_order', 'hardware_received'))
 
-            # Step 2: Annotate to remove 'D' from the engineer field
-            queryset = queryset.annotate(
-                engineer_filtered=Replace(
-                    Replace(F('engineer'), Value(engineer_name + ','), Value('')),
-                    Value(',' + engineer_name ), Value('')
-                )
-            )
+            # 2. Extract sales_order values
+            sales_orders = [entry['sales_order'] for entry in combined_data]
 
-            # Step 3: Add the location_of_hardware from CombinedTable
-            queryset = queryset.annotate(
-                hardware_received=Subquery(
-                    CombinedTable.objects.filter(sales_order=OuterRef('sales_order')).values('hardware_received')[:1]
-                )
-            )
+            # 3. Retrieve corresponding rows from StagingTable
+            staging_data = list(StagingTable.objects.filter(sales_order__in=sales_orders).values())
 
-            # Step 4: Create a list of fields excluding the 'engineer' column and adding 'location_of_hardware'
-            fields = [f.name for f in StagingTable._meta.get_fields()]
-            fields.append('hardware_received')
+            # 4. Create a dictionary from staging_data with sales_order as the key
+            staging_data_dict = {entry['sales_order']: entry for entry in staging_data}
 
-            # Step 5: Use the values() method to get the desired columns
-            staging_data = list(queryset.values(*fields))
+            # 5. Combine combined_data with staging_data
+            final_data = []
+            for combined_entry in combined_data:
+                sales_order = combined_entry['sales_order']
+                staging_entry = staging_data_dict.get(sales_order, {})
+                combined_entry.update(staging_entry)
+                final_data.append(combined_entry)
 
             context = {
-                "data": staging_data
+                "data": final_data
             }
             return Response(context)
         except Exception as e:
@@ -53,11 +48,13 @@ class EngineerTableView(APIView):
             date = data["date"]
             update = data["update"]
 
+            today = datetime.datetime.now()
+
             # 1. Update the last_status_update field in the CombinedTable
             if update ==  "drawn":
-                StagingTable.objects.filter(sales_order=sales_order).update(date_drawn=date)
+                StagingTable.objects.filter(sales_order=sales_order).update(date_drawn=date, last_status_update=today)
             elif update == "returned":
-                StagingTable.objects.filter(sales_order=sales_order).update(date_returned=date)
+                StagingTable.objects.filter(sales_order=sales_order).update(date_returned=date, last_status_update=today)
         except:
             pass
         
@@ -80,20 +77,12 @@ class AssignEngineerTableView(APIView):
     def post(self, request):
         try:
             data = request.data.get('data')
-            """ engineer_data will look something like this
-            {
-                'sales_number': 840275, 
-                'engineers': 
-                    [
-                        {'username': 'a.b@email.com', 'name': 'A B'}
-                        {'username': 'cd.e@email.com', 'name': 'Cd E'}
-                    ]
-            }
-             """
+            engineers = data['engineers']
+            sales_order = data['sales_order']
             
-            # 1. Update the new engineers selected to the database
-            engineers_names= ', '.join(entry['name'] for entry in data["engineers"])
-            CombinedTable.objects.filter(sales_order=data["sales_order"]).update(engineer=engineers_names)
+            today = datetime.datetime.now()
+            CombinedTable.objects.filter(sales_order=sales_order).update(engineer=engineers, last_status_update=today)
+
         except Exception as e:
             print (e)
 
@@ -103,7 +92,7 @@ class ProjectManagerTableView(APIView):
     def get(self, request):
         
        # HARDCODE: filter to "Sivaraj Kuppusamy" for now
-        projectmanager_data = list(CombinedTable.objects.filter(project_manager='Sivaraj Kuppusamy').values('sales_order','engineer','hardware_received','engineer','last_status_update'))
+        projectmanager_data = list(CombinedTable.objects.filter(project_manager='Sivaraj Kuppusamy').values('sales_order','engineer','hardware_received','last_status_update'))
         """ projectmanager_data will look something like this
         [
             {'"sales_order": "833151", "engineer": "David Lim, Wen Yang", "staging_status": null, "location_of_hardware": null, "last_status_update": null'}
@@ -166,18 +155,19 @@ class LogisticsTableView(APIView):
             data = request.data.get('data')
             sales_order = data["sales_order"]
             location = data["hardware_received"]
+            today = datetime.datetime.now()
 
-            CombinedTable.objects.filter(sales_order=sales_order).update(hardware_received=location)
+            CombinedTable.objects.filter(sales_order=sales_order).update(hardware_received=location, last_status_update=today)
         except:
             pass
         
         return Response() # return blank response if not frontend will throw an error
+    
 class FinanceTableView(APIView):
     def get(self, request):
     
         count_hardware_received = list(CombinedTable.objects.values('hardware_received').annotate(count=Count('hardware_received'))) 
         count_hardware_received.append ({ 'total_hardware_received': len(CombinedTable.objects.values('hardware_received'))}) 
-
 
         count_staging_status = list(StagingTable.objects.values('staging_status').annotate(count=Count('staging_status')))
         count_staging_status .append ({ 'total_staging_status ': len(StagingTable.objects.values('staging_status'))})     
