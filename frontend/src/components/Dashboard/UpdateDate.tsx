@@ -37,7 +37,7 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
         setCheckboxChecked(e.target.checked);
     };
 
-    const postDate = async () => {
+    const postDate = () => {
         if (!checkboxChecked) {
             if (update === 'drawn') toast.error("Please acknowledge that you are drawing the hardware.");
             else
