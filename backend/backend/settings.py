@@ -125,7 +125,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "backend.wsgi.application"
 
 CORS_ALLOWED_ORIGINS = [ # new
-    "http://localhost:3000",  
+    "http://localhost:3000",  "http://0.0.0.0"
 ]
 
 # Database

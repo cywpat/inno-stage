@@ -166,7 +166,7 @@ def transform_users_table(eTSR_df, eDSR_df, combined_df):
 
 def transform_staging_table(combined_df):
     staging_df = pd.DataFrame()
-    staging_df = combined_df[['Sales Order', 'Engineer']]
+    staging_df = combined_df[['Sales Order']]
     staging_df["Staging Status"] = "Not Yet" 
     staging_df["Date Drawn"] =  None
     staging_df["Date Returned"] =  None
@@ -283,7 +283,6 @@ def push_staging_table_to_psql(staging_df):
     sql_create_query = """
     CREATE TABLE staging_table (
         sales_order TEXT NOT NULL PRIMARY KEY,
-        engineer TEXT,
         staging_status TEXT NOT NULL,
         date_drawn DATE,
         date_returned DATE,
@@ -297,8 +296,8 @@ def push_staging_table_to_psql(staging_df):
     
     sql_insert_query = """
     INSERT INTO staging_table (
-        sales_order, engineer, staging_status, date_drawn, date_returned, no_carton, last_status_update
-    ) VALUES (%s, %s, %s, %s, %s, %s, %s)
+        sales_order, staging_status, date_drawn, date_returned, no_carton, last_status_update
+    ) VALUES (%s, %s, %s, %s, %s, %s)
     """
     
     records = [tuple(x) for x in staging_df.to_records(index=False)]
