@@ -48,9 +48,9 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                             : stagingData.hardware_received == 'OMNI' || stagingData.hardware_received == 'Not Yet'
                             ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-gray-300'>Not Received For Staging</span>
                             : stagingData.staging_status == 'Ready To Be Staged'
-                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>{stagingData.staging_status}</span>
-                            : stagingData.staging_status == 'Staging In Progress'
                             ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-yellow-300'>{stagingData.staging_status}</span>
+                            : stagingData.staging_status == 'Staging In Progress'
+                            ? <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-purple-300'>{stagingData.staging_status}</span>
                             : <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-green-300'>{stagingData.staging_status}</span>
                             }
                             {/* <span className='p-1.5 text-xs font-medium tracking-wider rounded-md bg-red-300'>Not Yet</span> */}

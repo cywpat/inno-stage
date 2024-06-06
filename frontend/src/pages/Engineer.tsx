@@ -26,16 +26,18 @@ function Engineer() {
         ]
     */
     useEffect(() => {
-        // fetch data
-        axios.get("http://localhost:8000/manyapps/engineer_table/").then(
-            function (response) {                      
-                setStagingData(response.data["data"])
-            }
-        ).catch(
-            function (error) {
-                console.log(error)
-            }
-        )
+        const interval = setInterval(() => {
+            axios.get("http://localhost:8000/manyapps/engineer_table/").then(
+                function (response) {                      
+                    setStagingData(response.data["data"])
+                }
+            ).catch(
+                function (error) {
+                    console.log(error)
+                }
+            )
+        }, 2000); //set your time here. repeat every 5 seconds
+        return () => clearInterval(interval);
     }, []);
 
     const today: Date = new Date();
