@@ -1,5 +1,6 @@
 import React from "react";
-import { MdOutlineEditCalendar, MdEditNote } from "react-icons/md";
+import { MdOutlineEditCalendar } from "react-icons/md";
+import dayjs from "dayjs"; // Import dayjs for date manipulation
 
 interface StagingData {
     sales_order: number; 
@@ -13,8 +14,18 @@ interface StagingData {
 }
 
 const RowEngineer = ({ stagingData }: { stagingData: StagingData }) => {
-    let drawnInputId: string = `date_drawn_${stagingData.sales_order}`
-    let returnedInputId: string = `date_returned_${stagingData.sales_order}`
+    let drawnInputId: string = `date_drawn_${stagingData.sales_order}`;
+    let returnedInputId: string = `date_returned_${stagingData.sales_order}`;
+
+    // Calculate the number of days since date drawn
+    const daysSinceDrawn = stagingData.date_drawn
+        ? dayjs().diff(dayjs(stagingData.date_drawn), 'day')
+        : null;
+
+    // Calculate the number of days between date drawn and date returned if both are available
+    const daysDrawnToReturned = stagingData.date_drawn && stagingData.date_returned
+        ? dayjs(stagingData.date_returned).diff(dayjs(stagingData.date_drawn), 'day')
+        : null;
 
     return (
         <>                
@@ -55,6 +66,16 @@ const RowEngineer = ({ stagingData }: { stagingData: StagingData }) => {
                             </span>
                         </div>
                     </div>
+                </td>
+                <td className='p-3 text-sm'>
+                    {/* Display the number of days between date drawn and date returned if available */}
+                    {daysDrawnToReturned && (
+                        <span>{daysDrawnToReturned} days</span>
+                    )}
+                    {/* Display the number of days since date drawn if date returned is not available */}
+                    {!stagingData.date_returned && daysSinceDrawn && (
+                        <span>{daysSinceDrawn} days</span>
+                    )}
                 </td>
                 <td className='p-3 text-sm'>{stagingData.no_carton}</td>
             </tr>

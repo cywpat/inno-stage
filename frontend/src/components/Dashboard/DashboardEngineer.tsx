@@ -35,6 +35,7 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Staging Status</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date Drawn</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>Date Returned</th>
+                        <th className='p-3 text-sm font-semibold tracking-wide text-left'>No. of days for staging</th>
                         <th className='p-3 text-sm font-semibold tracking-wide text-left'>No. of Cartons</th>
                     </tr>
                 </thead>
