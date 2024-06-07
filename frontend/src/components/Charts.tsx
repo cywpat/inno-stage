@@ -100,7 +100,7 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                     data: [
                                         { id: 0, value: 14, label: 'Not Yet Received', color: '#fca5a5' }, // red
                                         { id: 1, value: 3, label: 'Received At OMNI', color: '#fde047' }, // amber
-                                        { id: 2, value: 29, label: 'Received At KC', color: '#d8b4fe' }, // purple
+                                        { id: 2, value: 30, label: 'Received At KC', color: '#d8b4fe' }, // purple
                                         { id: 3, value: 1, label: 'Delivered To Client', color: '#86efac' }, // green
                                     ],
                                     arcLabel: (item) => `${item.value}`,
@@ -171,7 +171,7 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                                     data: [
                                         { id: 0, value: 4, label: '0 days', color: '#86efac' }, // green
                                         { id: 1, value: 15, label: '1 to 7 days', color: '#d8b4fe' }, // purple
-                                        { id: 2, value: 3, label: '7 to 14 days', color: '#fde047' }, // amber
+                                        { id: 2, value: 2, label: '7 to 14 days', color: '#fde047' }, // amber
                                         { id: 3, value: 0, label: '14 days to 21 days', color: '#fca5a5' }, // red
                                     ],
                                     arcLabel: (item) => `${item.value}`,

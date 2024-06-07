@@ -82,7 +82,7 @@ class AssignEngineerTableView(APIView):
             
             today = datetime.datetime.now()
             CombinedTable.objects.filter(sales_order=sales_order).update(engineer=engineers, last_status_update=today)
-
+            StagingTable.objects.filter(sales_order=sales_order).update(last_status_update=today)
         except Exception as e:
             print (e)
 
