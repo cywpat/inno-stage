@@ -237,8 +237,10 @@ class FinanceTableView(APIView):
         return Response(context)
     
 class DetailedSOView(APIView):
-    def get(self, request):
-        combined_data = list(CombinedTable.objects.filter(sales_order='833151').values('sales_order',
+    def post(self, request):
+        data = request.data.get('data')
+        sales_order = data['sales_order']
+        combined_data = list(CombinedTable.objects.filter(sales_order=sales_order).values('sales_order',
                                                                                     'client_name',
                                                                                     'engineer',
                                                                                     'date_creation',
@@ -254,7 +256,6 @@ class DetailedSOView(APIView):
                                                                                     'revenue',
                                                                                     'gp'
                                                                                     ))
-
         context = {
             "data": combined_data
         }

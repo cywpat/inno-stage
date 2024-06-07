@@ -40,16 +40,16 @@ function Details() {
     */
     useEffect(() => {
         const interval = setInterval(() => {
-            axios.get("http://localhost:8000/manyapps/detailed_so/").then(
-                function (response) {                
-                    console.log(response.data["data"])      
-                    setSoData(response.data["data"])
-                }
-            ).catch(
-                function (error) {
-                    console.log(error)
-                }
-            )
+            const data = {
+                sales_order: "827704" 
+            };
+            axios.post("http://localhost:8000/manyapps/detailed_so/", { data }).then(response => {
+                setSoData(response.data["data"])
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+
         }, 2000); //set your time here. repeat every 5 seconds
         return () => clearInterval(interval);
     }, []);
