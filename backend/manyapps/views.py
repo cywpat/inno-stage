@@ -235,3 +235,28 @@ class FinanceTableView(APIView):
             "data": [count_hardware_received, count_staging_status, days_data]
         }
         return Response(context)
+    
+class DetailedSOView(APIView):
+    def get(self, request):
+        combined_data = list(CombinedTable.objects.filter(sales_order='833151').values('sales_order',
+                                                                                    'client_name',
+                                                                                    'engineer',
+                                                                                    'date_creation',
+                                                                                    'client_po_number',
+                                                                                    'date_closed',
+                                                                                    'service_unit',
+                                                                                    'business_unit',
+                                                                                    'tsr_number',
+                                                                                    'project_id',
+                                                                                    'delivery_order_criteria',
+                                                                                    'hardware_received',
+                                                                                    'logistics_pic',
+                                                                                    'revenue',
+                                                                                    'gp'
+                                                                                    ))
+
+        context = {
+            "data": combined_data
+        }
+        return Response(context)
+    
