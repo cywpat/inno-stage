@@ -1,7 +1,7 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React, {useState, useEffect} from "react";
 import Title from "../components/Title";
 import SODetails from "../components/SODetails";
+import axios from "axios";
 
 interface SOData {
     sales_order: number; 
@@ -10,39 +10,53 @@ interface SOData {
     project_manager: string;
     engineer: string;
     date_creation: string;
-    client_PO_number: number;
+    client_po_number: number;
     date_closed: string;
     service_unit: string;
     business_unit: string;
     tsr_number: string;
     project_id: string;
-    industry_key: string; 
     delivery_order_criteria: string;
-    delivery_status: string; 
-    delivery_fc_month: string;
-    delivery_ac_month: string;
+    hardware_received: string; 
     logistic_pic: string;
-    sum_revenue: number;
-    sum_gp: number; 
-    staging_status: string;
+    revenue: number;
+    gp: number; 
 }
 
 
 
-let today: Date = new Date();
-let date_creation: string = today.toDateString();
-let delivery_fc_month: string = today.toDateString();
-let delivery_ac_month: string = today.toDateString();
-
-const soData: SOData[] = [
-    {'sales_order': 834080, 'project_name': 'DSTA_Budgeting', 'client_name': 'Ministry of Defence Defence Finance Organisation', 'project_manager': 'Sivaraj Kuppusamy', 'engineer': 'Neo Jia Ming, Cheah Yik Tung', 'date_creation': date_creation, 'client_PO_number': 3000469860, 'date_closed': '', 'service_unit': 'PS,MS', 'business_unit': 'Customer Interactive Solutions, Infrastructure/ Networking, Security', 'tsr_number': 'TSR-SG-FY24-11172', 'project_id': 'SGD/0824890', 'industry_key': 'Public Sector', 'delivery_order_criteria': 'Bundled Order', 'delivery_status': 'Fully received in warehouse', 'delivery_fc_month': delivery_fc_month, 'delivery_ac_month': delivery_ac_month, 'logistic_pic': 'Prakash', 'sum_revenue': 198650.8889, 'sum_gp': 51057.11, 'staging_status': 'Ready For Staging'},
-]
-
 function Details() {
+    // let today: Date = new Date();
+    // let date_creation: string = today.toDateString();
+    // let delivery_fc_month: string = today.toDateString();
+    // let delivery_ac_month: string = today.toDateString();
+    const [soData, setSoData] = useState<SOData[]>([]);
+    /* staging data will look something like this, it is a list of dictionaries
+        [
+            { "sales_order": "809056", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null },
+            { "sales_order": "801686", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null },
+            { "sales_order": "819876", "staging_status": "Not Yet", "date_drawn": null, "date_returned": null, "no_carton": null, "last_status_update": null } ]
+        ]
+    */
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const data = {
+                sales_order: "827704" 
+            };
+            axios.post("http://localhost:8000/manyapps/detailed_so/", { data }).then(response => {
+                setSoData(response.data["data"])
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+
+        }, 2000); //set your time here. repeat every 5 seconds
+        return () => clearInterval(interval);
+    }, []);
+
     let title: string = 'Sales Order Details'
     return (
         <>
-            <Navbar />
             <Title title={title}/>
             {soData.map((data) => (
                 <SODetails soData={data}/>
