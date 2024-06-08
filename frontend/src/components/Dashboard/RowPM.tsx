@@ -14,13 +14,19 @@ interface StagingData {
 
 const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
     let engInputId: string = `assign_eng_${stagingData.sales_order}`
+    let soDetailsId: string = `so_details_123`
     // let hwInputId: string = `hw_received_${stagingData.sales_order}`
 
     return (
         <>
             <tr className='hover:bg-blue-100 border-b-2 border-slate-100'>
                 <td className='p-3 text-sm'>
-                    <span className='cursor-pointer'>{stagingData.sales_order}</span>
+                    <div className='flex gap-3'>
+                        <span className='cursor-pointer'>{stagingData.sales_order}</span>
+                        <div className='pt-1'>
+                            <label htmlFor={soDetailsId} className="cursor-pointer"><MdEditNote /></label>
+                        </div>
+                    </div>
                 </td>
                 <td className='p-3 text-sm'>
                     <div className='flex gap-3'>
@@ -68,10 +74,14 @@ const RowPM = ({ stagingData }: { stagingData: StagingData }) => {
                             </div>
                           ))
                         : <div>To Be Assigned</div>
-                        }                        
-                        <div className='pt-1 pl-2'>
-                            <label className='cursor-pointer' htmlFor={engInputId}><MdEditNote /></label>
-                        </div>
+                        } 
+                        { stagingData.hardware_received === 'Not Yet' || stagingData.hardware_received === 'OMNI'
+                        ? <div className='pt-1 pl-2'>
+                              <label className='cursor-pointer' htmlFor={engInputId}><MdEditNote /></label>
+                          </div>
+                        : <></>
+                        }
+                        
                     </div>
                 </td>
                 <td className='p-3 text-sm'>{stagingData.last_status_update}</td>

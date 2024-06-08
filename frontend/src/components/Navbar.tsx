@@ -27,7 +27,7 @@ const Navbar = () => {
                         <img src={logo} alt='NTT DATA' width='150'/>
                     </a>
                     <a className='ml-6'>
-                        <h2 className='text-xl font-bold text-white'>Inno-Stage</h2>
+                        <h2 className='text-xl font-bold text-white tracking-wide'>Inno-Stage</h2>
                     </a>
                 </div>
                 <div className='flex-none'>

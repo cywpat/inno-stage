@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -49,6 +49,33 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
             date: date,
             update: update
         };
+        console.log(data)
+
+        try {
+            axios.post("http://localhost:8000/manyapps/engineer_table/", { data })
+            .catch(error => {
+              console.error("Error fetching data:", error);
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const postEmptyDate = () => {
+        if (!checkboxChecked) {
+            if (update === 'drawn') toast.error("Please acknowledge that you are drawing the hardware.");
+            else
+            toast.error("Please acknowledge that you are returning the hardware.");
+            return;
+        }
+
+        const data = {
+            sales_order: stagingData.sales_order, 
+            date: null, // Clear the date
+            update: update
+        };
+        console.log(data)
 
         try {
             axios.post("http://localhost:8000/manyapps/engineer_table/", { data })
@@ -94,6 +121,7 @@ const UpdateDate = ({ update, stagingData }: { update: string, stagingData: Stag
                         <label className='pl-2' htmlFor={checkboxId}>{message}</label>
                     </span>
                     <div className="modal-action">
+                        <label htmlFor={inputId} className="btn" onClick={postEmptyDate}>Clear</label>
                         <label htmlFor={inputId} className="btn" onClick={postDate}>Submit</label>
                         <label htmlFor={inputId} className="btn">Cancel</label>
                     </div>

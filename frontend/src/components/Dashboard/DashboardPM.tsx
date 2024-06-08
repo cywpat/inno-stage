@@ -3,6 +3,7 @@ import axios from 'axios';
 import RowPM from "./RowPM";
 import AssignEngineer from "./UpdateAssignEngineer";
 import HwReceived from "./UpdateHwReceived";
+import SODetails from "../SODetails";
 
 interface StagingData {
     sales_order: number; 
@@ -15,9 +16,35 @@ interface StagingData {
     last_status_update: string;
 }
 
+interface SOData {
+    sales_order: number; 
+    project_name: string;
+    client_name: string;
+    project_manager: string;
+    engineer: string;
+    date_creation: string;
+    client_po_number: number;
+    date_closed: string;
+    service_unit: string;
+    business_unit: string;
+    client_industry_sector: string;
+    tsr_number: string;
+    project_id: string;
+    delivery_order_criteria: string;
+    hardware_received: string; 
+    logistic_pic: string;
+    delivery_status: string;
+    delivery_ac_month: string;
+    delivery_fc_month: string;
+    revenue: number;
+    gp: number; 
+}
+
 const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [sortBy, setSortBy] = useState<keyof StagingData | null>(null);
+    const [soData, setSoData] = useState<SOData[]>([]);
+
 
     const handleSort = (column: keyof StagingData) => {
         if (sortBy === column) {
@@ -56,6 +83,22 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
         setSearchTerm(event.target.value);
     };
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const data = {
+                sales_order: "833151" 
+            };
+            axios.post("http://localhost:8000/manyapps/detailed_so/", { data }).then(response => {
+                setSoData(response.data["data"])
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+
+        }, 2000); //set your time here. repeat every 5 seconds
+        return () => clearInterval(interval);
+    }, []);
+
     return (
         <div className='px-8'>
             <input
@@ -81,11 +124,14 @@ const Dashboard = ({ stagingData }: { stagingData: StagingData[] }) => {
                     ))}
                 </tbody>
             </table>
+
+            {soData.map((data) => (
+                <SODetails soData={data} />
+            ))}
             
             {filteredData.map((data) => (
                 <React.Fragment key={data.sales_order}>
                     <AssignEngineer stagingData={data} searchEngineerResults={searchEngineerResults}/>
-                    <HwReceived stagingData={data} />
                 </React.Fragment>
             ))}            
         </div>

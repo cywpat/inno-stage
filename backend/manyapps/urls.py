@@ -1,6 +1,6 @@
 # manually create this file
 from django.urls import path
-from .views import AssignEngineerTableView, EngineerTableView, ProjectManagerTableView, LogisticsTableView, FinanceTableView
+from .views import AssignEngineerTableView, EngineerTableView, ProjectManagerTableView, LogisticsTableView, FinanceTableView, DetailedSOView, DetailedSOView2
 
 app_name = 'manyapps'
 
@@ -9,6 +9,8 @@ urlpatterns = [
     path ('assignengineer_table/', AssignEngineerTableView.as_view()),
     path ('projectmanager_table/', ProjectManagerTableView.as_view()),
     path ('logistics_table/', LogisticsTableView.as_view()),
-    path ('finance_table/', FinanceTableView.as_view())
+    path ('finance_table/', FinanceTableView.as_view()),
+    path ('detailed_so/', DetailedSOView.as_view()),
+    path ('detailed_so2/', DetailedSOView2.as_view()),
 ]
 
