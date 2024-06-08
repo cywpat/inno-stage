@@ -199,7 +199,7 @@ const Charts = ({ stagingData }: { stagingData: StagingData[][] }) => {
                             {...sizeSmall}
                             slotProps={{
                                 legend: {
-                                    padding: 0,
+                                    padding: -20,
                                 },
                             }}  
                         />
